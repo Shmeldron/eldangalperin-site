@@ -77,7 +77,7 @@ export const projects: Project[] = [
     screenshots: [
       { src: "/work/stayyoung/cover.png", alt: "StayYoung app home screen", frame: "phone" },
       { src: "/work/stayyoung/chat.png", alt: "Tovi AI assistant conversation", frame: "phone" },
-      { src: "/work/stayyoung/web.png", alt: "StayYoung marketing site", frame: "browser" },
+      { src: "/work/stayyoung/web.png", alt: "StayYoung marketing site", frame: "browser", ready: true },
     ],
   },
   {
