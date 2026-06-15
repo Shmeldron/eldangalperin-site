@@ -82,6 +82,7 @@ export const projects: Project[] = [
       "RTL-first design system keeps the mobile experience fast and consistent.",
     ],
     screenshots: [
+      { src: "/work/stayyoung/chat.png", alt: "Tovi — the in-app AI wellness coach", frame: "phone", ready: true },
       { src: "/work/stayyoung/cover.png", alt: "StayYoung member app — recipe & content library", frame: "phone", ready: true },
       { src: "/work/stayyoung/journal.png", alt: "StayYoung app — live sessions & journal", frame: "phone", ready: true },
     ],
