@@ -6,6 +6,7 @@ import { motion, useMotionValue, useSpring, useReducedMotion } from "motion/reac
 import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/lib/projects";
 import { DeviceFrame } from "@/components/DeviceFrame";
+import { TerminalMotif } from "@/components/TerminalMotif";
 
 export function ProjectCard({ project, index }: { project: Project; index: number }) {
   const reduce = useReducedMotion();
@@ -51,7 +52,11 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
         </div>
 
         <div className="mt-4" style={{ transform: "translateZ(40px)" }}>
-          <DeviceFrame shot={project.screenshots[0]} />
+          {project.kind === "service" ? (
+            <TerminalMotif lines={project.terminal ?? []} title={`${project.slug}`} />
+          ) : (
+            <DeviceFrame shot={project.screenshots[0]} />
+          )}
         </div>
 
         <div className="mt-6 flex items-start justify-between gap-4">

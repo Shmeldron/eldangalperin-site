@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import { getProject, projects, publishedProjects } from "@/lib/projects";
 import { site } from "@/lib/site";
 import { DeviceFrame } from "@/components/DeviceFrame";
+import { TerminalMotif } from "@/components/TerminalMotif";
 import { Reveal } from "@/components/motion/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 
@@ -87,7 +88,11 @@ export default async function CaseStudy({
 
       {/* hero shot */}
       <Reveal className="mt-12">
-        <DeviceFrame shot={project.screenshots[0]} priority />
+        {project.kind === "service" ? (
+          <TerminalMotif lines={project.terminal ?? []} title={project.slug} />
+        ) : (
+          <DeviceFrame shot={project.screenshots[0]} priority />
+        )}
       </Reveal>
 
       {/* body */}

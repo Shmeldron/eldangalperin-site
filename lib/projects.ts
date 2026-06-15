@@ -26,6 +26,13 @@ export type Project = {
   tagline: string;
   year: string;
   role: string;
+  /**
+   * "ui" projects render screenshots in device frames; "service" projects
+   * (bots, backends, agents — no UI) render a terminal motif instead.
+   */
+  kind?: "ui" | "service";
+  /** Lines shown in the terminal motif for service projects. */
+  terminal?: string[];
   /** Live/repo links shown on the case study. */
   links?: { label: string; href: string }[];
   stack: string[];
@@ -82,34 +89,36 @@ export const projects: Project[] = [
   {
     slug: "organic-content-saas",
     title: "Organic Content SaaS",
-    kicker: "Multi-tenant content engine",
+    kicker: "AI reels generator",
     tagline:
-      "A multi-tenant pipeline that turns a brand's raw inputs into ready-to-publish social content.",
+      "A SaaS that turns raw footage into ready-to-publish short-form video — transcribed, subtitled, and composited by an AI pipeline.",
     year: "2025",
     role: "Founder & engineer",
     stack: [
       "Next.js",
       "TypeScript",
-      "PostgreSQL",
-      "Multi-tenant auth",
-      "LLM pipelines",
-      "Queues / background jobs",
+      "Anthropic Claude",
+      "Vercel AI SDK",
+      "Drizzle ORM",
+      "Neon Postgres",
+      "Python · ffmpeg · Whisper",
+      "Vercel Blob",
     ],
     featured: true,
     published: true,
     problem:
-      "Small brands want a steady stream of on-brand social content but can't staff it. The goal: a self-serve SaaS that ingests a brand's voice and assets and produces a publishable content calendar with minimal human touch.",
+      "Creators need a constant stream of short-form video, but editing — trimming, captioning, compositing — is the slow, repetitive part. The goal: a self-serve SaaS that turns raw clips into publishable reels with minimal hands-on work.",
     build: [
-      "Designed the multi-tenant architecture — isolated workspaces, per-tenant data, and role-based access.",
-      "Built the content→social pipeline: ingestion, LLM generation against per-brand voice context, and review/approval steps.",
-      "Implemented background processing for long-running generation jobs with retries and status tracking.",
+      "Built the reels generator: a Python pipeline that trims silence, transcribes with Whisper, burns subtitles, removes backgrounds, and composites the final video.",
+      "Wired Claude in through the Vercel AI SDK for AI-assisted content generation inside the workflow.",
+      "Multi-user dashboard with auth, invite links, and shareable media/profile pages; Drizzle + Neon Postgres with Vercel Blob for media storage.",
     ],
     impact: [
-      "Took the product from concept to a working multi-tenant pipeline.",
-      "Generation pipeline produces draft content runs end to end per tenant.",
+      "Automates the slowest part of short-form — from raw clip to subtitled, composited reel.",
+      "Multi-user from day one: auth, invites, and per-user media.",
     ],
     screenshots: [
-      { src: "/work/organic-content-saas/cover.png", alt: "Content SaaS dashboard", frame: "browser" },
+      { src: "/work/organic-content-saas/cover.png", alt: "Organic Content SaaS dashboard", frame: "browser" },
     ],
   },
   {
@@ -117,26 +126,96 @@ export const projects: Project[] = [
     title: "WhatsApp Personal Assistant",
     kicker: "LLM agent over WhatsApp",
     tagline:
-      "A personal assistant that lives in WhatsApp — natural-language requests in, real actions out.",
-    year: "2024",
+      "A self-hosted assistant that lives in WhatsApp — voice notes in, real actions out.",
+    year: "2025",
     role: "Solo build",
-    links: [{ label: "Source on GitHub", href: "https://github.com/Shmeldron" }],
-    stack: ["Node.js", "whatsapp-web.js", "LLM / function calling", "TypeScript"],
+    kind: "service",
+    terminal: [
+      "$ node whatsapp-assistant",
+      "✓ whatsapp session connected",
+      "✓ mcp tools loaded · skills ready",
+      "→ voice note → transcribed → answered",
+      "→ cron: evening digest scheduled",
+      "# reminders · google · clickup · memory",
+    ],
+    stack: ["Node.js", "whatsapp-web.js", "OpenAI", "MCP", "Google APIs", "node-cron", "embeddings"],
     published: true,
     problem:
-      "I wanted an assistant I'd actually use daily — no new app to open, just my existing chat. WhatsApp is where the messages already are.",
+      "I wanted an assistant I'd actually use daily — no new app to open, just the chat I'm already in. WhatsApp is where the messages already are.",
     build: [
-      "Bridged WhatsApp to an LLM with whatsapp-web.js, handling session auth and message lifecycle.",
-      "Added function-calling so the model can take structured actions, not just chat.",
-      "Kept it resilient to reconnects and long-running sessions.",
+      "Bridged WhatsApp to an LLM with whatsapp-web.js — voice-note transcription, spoken replies, and per-contact memory via embeddings.",
+      "Added reminders, cron jobs, an evening digest, and a daily briefing, all delivered over WhatsApp.",
+      "Integrated Google APIs and MCP tool servers so the assistant takes real actions, not just chats.",
     ],
     impact: [
-      "A working daily-driver assistant accessible from any chat.",
-      "Demonstrates LLM tool-use / agent plumbing on a real messaging channel.",
+      "A daily-driver assistant reachable from any chat — with voice and memory.",
+      "Demonstrates LLM tool-use / MCP plumbing on a real messaging channel.",
     ],
-    screenshots: [
-      { src: "/work/whatsapp-assistant/cover.png", alt: "WhatsApp assistant conversation", frame: "phone" },
+    screenshots: [],
+  },
+  {
+    slug: "stayyoung-unsubscribe",
+    title: "Email Unsubscribe Agent",
+    kicker: "AI inbox automation",
+    tagline:
+      "A backend service that reads inbound email and uses an LLM to decide what to unsubscribe from — automatically.",
+    year: "2024",
+    role: "Solo build",
+    kind: "service",
+    terminal: [
+      "$ node unsubscribe-worker",
+      "✓ gmail api connected",
+      "✓ rabbitmq queue online",
+      "→ scanning inbox · classifying",
+      "→ llm: unsubscribe candidate?",
+      "✓ lists unsubscribed",
     ],
+    stack: ["Node.js", "Express", "OpenAI", "Gmail API", "RabbitMQ", "MySQL"],
+    published: true,
+    problem:
+      "Marketing inboxes drown in list noise. The goal: automatically detect unwanted subscriptions and act on them at scale, without a human triaging every message.",
+    build: [
+      "Gmail integration that scans inbound mail and routes unsubscribe candidates through a queue.",
+      "An OpenAI-powered classifier that decides whether — and how — to unsubscribe.",
+      "RabbitMQ for async job handling with MySQL persistence, built to run continuously.",
+    ],
+    impact: [
+      "Turns a manual chore into an autonomous background worker.",
+      "Queue-based design absorbs inbox volume without blocking.",
+    ],
+    screenshots: [],
+  },
+  {
+    slug: "spaceship-simulator-jarvis",
+    title: "Spaceship Simulator — Jarvis",
+    kicker: "Multi-agent simulation",
+    tagline:
+      "A multi-agent spaceship-operations simulator: an orchestrator and ship-AI agents coordinating through a clean adapter protocol.",
+    year: "2026",
+    role: "Solo build",
+    kind: "service",
+    terminal: [
+      "$ uv run bot-bench",
+      "✓ merlin orchestrator online",
+      "✓ ship-ai agents ×2 spawned",
+      "→ adapters: mock layer (contract-tested)",
+      "→ agents negotiating ship ops…",
+      "# fastapi operator dashboard @ :8000",
+    ],
+    stack: ["Python", "FastAPI", "Multi-agent", "TDD · contract tests", "uv"],
+    published: true,
+    problem:
+      "How do multiple autonomous agents coordinate to run a complex system — without coupling them to real hardware? This simulator is the testbed.",
+    build: [
+      "Three long-running agent processes — a Merlin orchestrator plus two ship-AI agents — communicating through adapter protocols.",
+      "A full mock-adapter layer with shared contract tests, so real adapters can swap in later without touching agent logic.",
+      "A FastAPI operator dashboard and a bot-bench runner for exercising the whole system.",
+    ],
+    impact: [
+      "A clean, test-first architecture for multi-agent coordination.",
+      "Adapter + contract-test design keeps agents swappable and verifiable.",
+    ],
+    screenshots: [],
   },
 ];
 
