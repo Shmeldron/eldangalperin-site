@@ -8,8 +8,20 @@ export const MAX_HISTORY_MESSAGES = 12;
 /** Cap on tokens the model may generate per reply. */
 export const MAX_OUTPUT_TOKENS = 500;
 
-/** Default model — cheap & fast. Swappable via env. */
-export const ASSISTANT_MODEL = process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5-20251001";
+/**
+ * Provider is auto-selected from whichever API key is present (OpenAI wins if
+ * both are set). Each model is overridable via its own env var.
+ */
+export const OPENAI_MODEL = process.env.OPENAI_MODEL ?? "gpt-4o-mini";
+export const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5-20251001";
+
+export type Provider = "openai" | "anthropic";
+
+export function selectProvider(): Provider | null {
+  if (process.env.OPENAI_API_KEY) return "openai";
+  if (process.env.ANTHROPIC_API_KEY) return "anthropic";
+  return null;
+}
 
 function projectsContext(): string {
   return publishedProjects

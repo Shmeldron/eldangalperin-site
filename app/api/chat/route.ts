@@ -1,14 +1,17 @@
 import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import {
-  ASSISTANT_MODEL,
+  ANTHROPIC_MODEL,
+  OPENAI_MODEL,
   MAX_OUTPUT_TOKENS,
   buildSystemPrompt,
   sanitizeMessages,
+  selectProvider,
+  type ChatMessage,
 } from "@/lib/assistant";
 import { checkRateLimit, reserveMonthlyBudget } from "@/lib/limits";
 
 export const runtime = "nodejs";
-// Don't prerender / cache — this is dynamic.
 export const dynamic = "force-dynamic";
 
 function json(body: unknown, status: number) {
@@ -29,13 +32,46 @@ function monthKey(): string {
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
 }
 
+/** Stream plain-text deltas from the selected provider into a controller. */
+async function streamReply(
+  provider: "openai" | "anthropic",
+  system: string,
+  messages: ChatMessage[],
+  push: (text: string) => void
+) {
+  if (provider === "openai") {
+    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const stream = await client.chat.completions.create({
+      model: OPENAI_MODEL,
+      max_tokens: MAX_OUTPUT_TOKENS,
+      stream: true,
+      messages: [{ role: "system", content: system }, ...messages],
+    });
+    for await (const chunk of stream) {
+      const text = chunk.choices[0]?.delta?.content;
+      if (text) push(text);
+    }
+    return;
+  }
+
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const stream = anthropic.messages.stream({
+    model: ANTHROPIC_MODEL,
+    max_tokens: MAX_OUTPUT_TOKENS,
+    system,
+    messages,
+  });
+  for await (const event of stream) {
+    if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+      push(event.delta.text);
+    }
+  }
+}
+
 export async function POST(req: Request) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return json(
-      { code: "disabled", error: "The assistant is currently offline." },
-      503
-    );
+  const provider = selectProvider();
+  if (!provider) {
+    return json({ code: "disabled", error: "The assistant is currently offline." }, 503);
   }
 
   // --- guardrails ---
@@ -71,26 +107,14 @@ export async function POST(req: Request) {
     );
   }
 
-  const anthropic = new Anthropic({ apiKey });
-
+  const system = buildSystemPrompt();
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        const ai = anthropic.messages.stream({
-          model: ASSISTANT_MODEL,
-          max_tokens: MAX_OUTPUT_TOKENS,
-          system: buildSystemPrompt(),
-          messages,
-        });
-        for await (const event of ai) {
-          if (
-            event.type === "content_block_delta" &&
-            event.delta.type === "text_delta"
-          ) {
-            controller.enqueue(encoder.encode(event.delta.text));
-          }
-        }
+        await streamReply(provider, system, messages, (text) =>
+          controller.enqueue(encoder.encode(text))
+        );
         controller.close();
       } catch (err) {
         console.error("[chat] stream error", err);

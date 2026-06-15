@@ -29,7 +29,8 @@ Until real screenshots exist, a branded placeholder renders in each frame.
 
 A scoped chat assistant (`/api/chat`) answers questions about Eldan's work.
 
-- Set `ANTHROPIC_API_KEY` to enable it; without it, the widget shows an offline state.
+- Set `OPENAI_API_KEY` (or `ANTHROPIC_API_KEY`) to enable it; without either, the
+  widget shows an offline state. If both are set, OpenAI is used.
 - Guardrails: per-IP rate limit, input/output caps, and a hard **monthly request cap**.
 - For a durable monthly cap across serverless instances, add Upstash Redis env vars
   (see `.env.example`). Otherwise limits are best-effort in-memory.

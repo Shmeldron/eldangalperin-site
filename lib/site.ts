@@ -18,8 +18,7 @@ export const site = {
   email: { user: "eldangalperin", domain: "gmail.com" },
   socials: {
     github: "https://github.com/Shmeldron",
-    // TODO(eldan): confirm your public LinkedIn URL.
-    linkedin: "https://www.linkedin.com/in/eldangalperin",
+    linkedin: "https://www.linkedin.com/in/eldan-galperin",
   },
 } as const;
 
