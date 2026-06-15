@@ -51,7 +51,7 @@ export const projects: Project[] = [
     title: "StayYoung",
     kicker: "AI wellness platform",
     tagline:
-      "An AI-driven wellness platform — owned end to end, from the product app to the on-site AI coach and the marketing site.",
+      "An AI-driven wellness platform — owned end to end, from the member app to the on-site AI coach to the subscription platform behind it.",
     year: "2025–26",
     role: "Founding / lead full-stack engineer",
     links: [{ label: "Visit StayYoung", href: "https://stayyoung.live" }],
@@ -70,7 +70,7 @@ export const projects: Project[] = [
     problem:
       "Wellness guidance is generic and hard to stick with. StayYoung set out to deliver a personalised, conversational experience that meets people in Hebrew, on mobile, and adapts to them over time — which meant building a real product, not a landing page.",
     build: [
-      "Owned the full stack end to end: the member app, the marketing site, and the internal finance/ops tooling.",
+      "Owned the full stack end to end: the member app, the AI coach, and the subscription, billing, and funnel platform that runs the business side.",
       "Built Tovi, an in-app AI assistant on Claude — scoped system prompts, streaming responses, and guardrails for a safe, on-brand conversation.",
       "Designed a Hebrew-first, RTL-correct UI system on React + Tailwind + shadcn that stays fast on mobile.",
       "Modelled the data in PostgreSQL with row-level security and SECURITY DEFINER RPCs; auth, OTP, and notification flows wired through Supabase Edge Functions.",
