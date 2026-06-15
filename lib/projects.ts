@@ -114,6 +114,41 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "stayyoung-platform",
+    title: "StayYoung Platform",
+    kicker: "business & growth hub",
+    tagline:
+      "The internal platform that runs the business — sales funnels, subscription billing, AI agents, finance, and bookings, in one Next.js app.",
+    year: "2025–26",
+    role: "Solo build",
+    stack: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Vercel Postgres",
+      "NextAuth",
+      "Vercel AI SDK",
+      "PayPlus",
+      "Meta Ads API",
+    ],
+    featured: true,
+    published: true,
+    problem:
+      "Running a subscription business means juggling funnels, payments, dunning, ads, finance, and support — usually across a dozen disconnected SaaS tools. This platform pulls all of it into one place, custom-built for how the business actually operates.",
+    build: [
+      "A multi-step funnel engine (optin → sales → upsell → downsell → thank-you) with a visual, node-based builder and AI-assisted editing.",
+      "Subscription billing on PayPlus with automated dunning, retries, and cron-driven reconciliation — plus a WooCommerce migration path.",
+      "Per-agent AI assistants (own knowledge base, sandbox, analytics), a finance dashboard (cashflow, P&L, VAT, forecasts), embedded meeting booking, and Meta Ads integration.",
+    ],
+    impact: [
+      "Replaces a stack of SaaS tools with one platform tailored to the business.",
+      "Automates the money-critical parts — recurring billing, dunning, and reconciliation.",
+    ],
+    screenshots: [
+      { src: "/work/stayyoung-platform/funnel-builder.png", alt: "StayYoung platform — visual funnel builder", frame: "browser" },
+    ],
+  },
+  {
     slug: "whatsapp-assistant",
     title: "WhatsApp Personal Assistant",
     kicker: "LLM agent over WhatsApp",
@@ -142,38 +177,6 @@ export const projects: Project[] = [
     impact: [
       "A daily-driver assistant reachable from any chat — with voice and memory.",
       "Demonstrates LLM tool-use / MCP plumbing on a real messaging channel.",
-    ],
-    screenshots: [],
-  },
-  {
-    slug: "stayyoung-unsubscribe",
-    title: "Email Unsubscribe Agent",
-    kicker: "AI inbox automation",
-    tagline:
-      "A backend service that reads inbound email and uses an LLM to decide what to unsubscribe from — automatically.",
-    year: "2024",
-    role: "Solo build",
-    kind: "service",
-    terminal: [
-      "$ node unsubscribe-worker",
-      "✓ gmail api connected",
-      "✓ rabbitmq queue online",
-      "→ scanning inbox · classifying",
-      "→ llm: unsubscribe candidate?",
-      "✓ lists unsubscribed",
-    ],
-    stack: ["Node.js", "Express", "OpenAI", "Gmail API", "RabbitMQ", "MySQL"],
-    published: true,
-    problem:
-      "Marketing inboxes drown in list noise. The goal: automatically detect unwanted subscriptions and act on them at scale, without a human triaging every message.",
-    build: [
-      "Gmail integration that scans inbound mail and routes unsubscribe candidates through a queue.",
-      "An OpenAI-powered classifier that decides whether — and how — to unsubscribe.",
-      "RabbitMQ for async job handling with MySQL persistence, built to run continuously.",
-    ],
-    impact: [
-      "Turns a manual chore into an autonomous background worker.",
-      "Queue-based design absorbs inbox volume without blocking.",
     ],
     screenshots: [],
   },
