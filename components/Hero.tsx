@@ -63,7 +63,7 @@ export function Hero() {
     gy.set(((e.clientY - r.top) / r.height) * 100);
   }
 
-  const headline = useScramble("I build AI products", !reduce);
+  const headline = useScramble("I build products", !reduce);
 
   return (
     <section
@@ -109,8 +109,8 @@ export function Hero() {
 
         <p className="mt-6 max-w-2xl text-balance text-lg text-muted sm:text-xl">
           {site.name} — a {site.role.toLowerCase()} who designs, builds, and ships
-          AI-powered products. Next.js, TypeScript, and applied LLMs, from the first
-          commit to production.
+          web apps, AI products, and automations. From the first commit to
+          production.
         </p>
 
         <div className="mt-9 flex flex-wrap items-center gap-3">

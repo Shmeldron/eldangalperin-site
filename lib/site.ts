@@ -9,10 +9,10 @@ export const site = {
   // NEXT_PUBLIC_SITE_URL on Vercel once the domain is live.
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://eldangalperin.com",
   role: "Full-stack product engineer",
-  tagline: "I design, build, and ship AI-powered products end to end.",
+  tagline: "I design, build, and ship products end to end.",
   // One-liner used for <meta description> and social cards.
   description:
-    "Eldan Galperin — full-stack product engineer who ships AI-powered products end to end. Next.js, TypeScript, and applied LLMs, from first commit to production.",
+    "Eldan Galperin — full-stack product engineer. I design, build, and ship web apps, AI products, and automations end to end — from the first commit to production.",
   locationLine: "Israel · working worldwide · remote-first",
   // Split for the email obfuscation reveal (never rendered as one string).
   email: { user: "eldangalperin", domain: "gmail.com" },
