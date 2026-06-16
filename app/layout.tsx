@@ -6,6 +6,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CommandPalette } from "@/components/CommandPalette";
 import { ChatWidget } from "@/components/chat/ChatWidget";
+import { VercelAnalytics } from "@/components/VercelAnalytics";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -67,6 +68,7 @@ export default function RootLayout({
         <Footer />
         <CommandPalette />
         <ChatWidget />
+        <VercelAnalytics />
       </body>
     </html>
   );
