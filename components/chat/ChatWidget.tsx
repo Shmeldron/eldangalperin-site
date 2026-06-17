@@ -4,25 +4,25 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Bot, Mail, Send, Sparkles, X } from "lucide-react";
 import { track } from "@vercel/analytics";
-import { site } from "@/lib/site";
+import { DICT, DIR } from "@/lib/i18n/content";
+import { useLocale } from "@/lib/i18n/LocaleProvider";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
-const SUGGESTIONS = [
-  "Can Eldan help with my AI product?",
-  "What's he like to work with?",
-  "Is he available for freelance?",
-];
-
-const GREETING: Msg = {
-  role: "assistant",
-  content: `Hi! I'm ${site.name.split(" ")[0]}'s AI assistant. Ask me about his work, skills, or availability.`,
-};
-
+/**
+ * Floating AI assistant. Its UI/greeting/suggestions follow the site language
+ * toggle; replies still come from /api/chat, which mirrors the visitor's input
+ * language (so a Hebrew opener → Hebrew conversation). Message bubbles use
+ * dir="auto" so each message aligns by its own content language.
+ */
 export function ChatWidget() {
   const reduce = useReducedMotion();
+  const { locale } = useLocale();
+  const t = DICT[locale].chat;
+  const dir = DIR[locale];
+
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Msg[]>([GREETING]);
+  const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -54,7 +54,7 @@ export function ChatWidget() {
     if (!trimmed || busy) return;
     track("chat_message_sent");
 
-    const history = [...messages.filter((m) => m !== GREETING), { role: "user", content: trimmed } as Msg];
+    const history = [...messages, { role: "user", content: trimmed } as Msg];
     setMessages((m) => [...m, { role: "user", content: trimmed }, { role: "assistant", content: "" }]);
     setInput("");
     setBusy(true);
@@ -127,7 +127,7 @@ export function ChatWidget() {
       <motion.button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        aria-label="Open AI assistant"
+        aria-label={t.openAria}
         initial={false}
         whileHover={reduce ? undefined : { scale: 1.05 }}
         whileTap={reduce ? undefined : { scale: 0.95 }}
@@ -150,6 +150,7 @@ export function ChatWidget() {
       <AnimatePresence>
         {open && (
           <motion.div
+            dir={dir}
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.96 }}
@@ -162,16 +163,22 @@ export function ChatWidget() {
                 <Sparkles className="h-4 w-4" />
               </span>
               <div className="leading-tight">
-                <p className="text-sm font-medium">Ask about {site.name.split(" ")[0]}</p>
-                <p className="font-mono text-[10px] text-faint">AI assistant · scoped to his work</p>
+                <p className="text-sm font-medium">{t.headerTitle}</p>
+                <p className="font-mono text-[10px] text-faint">{t.headerSub}</p>
               </div>
             </div>
 
             {/* messages */}
             <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+              {/* greeting (presentational, follows the toggle) */}
+              <div dir="auto" className="me-auto max-w-[85%] rounded-2xl rounded-bl-sm bg-card-2 px-3.5 py-2 text-sm text-muted">
+                {t.greeting}
+              </div>
+
               {messages.map((m, i) => (
                 <div
                   key={i}
+                  dir="auto"
                   className={
                     m.role === "user"
                       ? "ms-auto max-w-[85%] rounded-2xl rounded-br-sm bg-accent/15 px-3.5 py-2 text-sm text-foreground"
@@ -182,9 +189,9 @@ export function ChatWidget() {
                 </div>
               ))}
 
-              {messages.length <= 1 && (
+              {messages.length === 0 && (
                 <div className="flex flex-wrap gap-2 pt-1">
-                  {SUGGESTIONS.map((s) => (
+                  {t.suggestions.map((s) => (
                     <button
                       key={s}
                       onClick={() => send(s)}
@@ -196,7 +203,7 @@ export function ChatWidget() {
                 </div>
               )}
 
-              {messages.length > 1 && leadStatus !== "sent" && (
+              {messages.length > 0 && leadStatus !== "sent" && (
                 <div className="pt-1">
                   {!leadFormOpen && (leadStatus === "idle" || leadStatus === "error") && (
                     <button
@@ -205,7 +212,7 @@ export function ChatWidget() {
                       className="inline-flex items-center gap-1.5 text-xs text-faint transition-colors hover:text-accent"
                     >
                       <Mail className="h-3.5 w-3.5" />
-                      Share your email for Eldan
+                      {t.shareEmail}
                     </button>
                   )}
 
@@ -214,6 +221,7 @@ export function ChatWidget() {
                       <input
                         type="email"
                         required
+                        dir="ltr"
                         value={leadEmail}
                         onChange={(e) => setLeadEmail(e.target.value)}
                         maxLength={120}
@@ -224,7 +232,7 @@ export function ChatWidget() {
                         value={leadNote}
                         onChange={(e) => setLeadNote(e.target.value)}
                         maxLength={600}
-                        placeholder="One line about your project (optional)"
+                        placeholder={t.notePlaceholder}
                         className="w-full rounded-lg bg-card px-2.5 py-1.5 text-sm text-foreground outline-none placeholder:text-faint"
                       />
                       <div className="flex items-center gap-2">
@@ -233,32 +241,30 @@ export function ChatWidget() {
                           disabled={leadStatus === "sending" || !leadEmail.trim()}
                           className="rounded-full bg-accent px-3 py-1.5 text-xs font-medium text-[#04130c] transition-opacity disabled:opacity-40"
                         >
-                          {leadStatus === "sending" ? "Sending…" : "Send to Eldan"}
+                          {leadStatus === "sending" ? t.sending : t.send}
                         </button>
                         <button
                           type="button"
                           onClick={() => setLeadFormOpen(false)}
                           className="text-xs text-faint hover:text-foreground"
                         >
-                          Cancel
+                          {t.cancel}
                         </button>
                       </div>
                       {leadStatus === "error" && (
-                        <p className="text-xs text-red-400">Couldn&apos;t send — try the contact section on the site.</p>
+                        <p className="text-xs text-red-400">{t.errorSend}</p>
                       )}
                     </form>
                   )}
 
                   {leadStatus === "offline" && (
-                    <p className="text-xs text-faint">
-                      Reach Eldan directly via the contact section on the site.
-                    </p>
+                    <p className="text-xs text-faint">{t.offline}</p>
                   )}
                 </div>
               )}
 
               {leadStatus === "sent" && (
-                <p className="pt-1 text-xs text-accent">Got it — Eldan will be in touch.</p>
+                <p className="pt-1 text-xs text-accent">{t.sent}</p>
               )}
             </div>
 
@@ -275,13 +281,13 @@ export function ChatWidget() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 maxLength={800}
-                placeholder="Ask a question…"
+                placeholder={t.placeholder}
                 className="flex-1 bg-transparent px-2 text-sm text-foreground outline-none placeholder:text-faint"
               />
               <button
                 type="submit"
                 disabled={busy || !input.trim()}
-                aria-label="Send"
+                aria-label={t.sendAria}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-accent text-[#04130c] transition-opacity disabled:opacity-40"
               >
                 <Send className="h-4 w-4" />

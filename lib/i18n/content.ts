@@ -70,6 +70,23 @@ export type Dict = {
     nextProject: string;
     startProject: string;
   };
+  chat: {
+    greeting: string;
+    suggestions: string[];
+    headerTitle: string;
+    headerSub: string;
+    placeholder: string;
+    shareEmail: string;
+    notePlaceholder: string;
+    send: string;
+    sending: string;
+    cancel: string;
+    errorSend: string;
+    offline: string;
+    sent: string;
+    openAria: string;
+    sendAria: string;
+  };
 };
 
 export const DICT: Record<Locale, Dict> = {
@@ -127,6 +144,27 @@ export const DICT: Record<Locale, Dict> = {
       nextProject: "next project",
       startProject: "Start a project",
     },
+    chat: {
+      greeting: "Hi! I'm Eldan's AI assistant. Ask me about his work, skills, or availability.",
+      suggestions: [
+        "Can Eldan help with my AI product?",
+        "What's he like to work with?",
+        "Is he available for freelance?",
+      ],
+      headerTitle: "Ask about Eldan",
+      headerSub: "AI assistant · scoped to his work",
+      placeholder: "Ask a question…",
+      shareEmail: "Share your email for Eldan",
+      notePlaceholder: "One line about your project (optional)",
+      send: "Send to Eldan",
+      sending: "Sending…",
+      cancel: "Cancel",
+      errorSend: "Couldn't send — try the contact section on the site.",
+      offline: "Reach Eldan directly via the contact section on the site.",
+      sent: "Got it — Eldan will be in touch.",
+      openAria: "Open AI assistant",
+      sendAria: "Send",
+    },
   },
   he: {
     nav: { work: "עבודות", about: "אודות", contact: "יצירת קשר" },
@@ -181,6 +219,27 @@ export const DICT: Record<Locale, Dict> = {
       stack: "סטאק",
       nextProject: "הפרויקט הבא",
       startProject: "בוא נתחיל פרויקט",
+    },
+    chat: {
+      greeting: "היי! אני העוזר ה‑AI של אלדן. שאלו אותי על העבודה, היכולות או הזמינות שלו.",
+      suggestions: [
+        "אלדן יכול לעזור עם מוצר ה‑AI שלי?",
+        "איך זה לעבוד איתו?",
+        "הוא פנוי לעבודה עצמאית?",
+      ],
+      headerTitle: "שאלו על אלדן",
+      headerSub: "עוזר AI · ממוקד בעבודה שלו",
+      placeholder: "שאלו שאלה…",
+      shareEmail: "השאירו אימייל לאלדן",
+      notePlaceholder: "שורה אחת על הפרויקט (אופציונלי)",
+      send: "שליחה לאלדן",
+      sending: "שולח…",
+      cancel: "ביטול",
+      errorSend: "השליחה נכשלה — נסו את אזור יצירת הקשר באתר.",
+      offline: "אפשר ליצור קשר עם אלדן ישירות דרך אזור יצירת הקשר באתר.",
+      sent: "קיבלתי — אלדן יחזור אליכם.",
+      openAria: "פתיחת העוזר החכם",
+      sendAria: "שליחה",
     },
   },
 };
