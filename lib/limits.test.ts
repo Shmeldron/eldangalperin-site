@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkLeadRateLimit } from "./limits";
+import { checkDailyRateLimit, checkLeadRateLimit } from "./limits";
 
 describe("checkLeadRateLimit (in-memory)", () => {
   it("allows up to the default cap (3/min) then blocks", async () => {
@@ -12,5 +12,15 @@ describe("checkLeadRateLimit (in-memory)", () => {
 
   it("tracks ips independently", async () => {
     expect(await checkLeadRateLimit("test-ip-B")).toBe(true);
+  });
+});
+
+describe("checkDailyRateLimit (in-memory)", () => {
+  it("allows up to the default daily cap (30) then blocks", async () => {
+    const ip = "test-ip-day";
+    for (let i = 0; i < 30; i++) {
+      expect(await checkDailyRateLimit(ip)).toBe(true);
+    }
+    expect(await checkDailyRateLimit(ip)).toBe(false); // 31st — over daily cap
   });
 });

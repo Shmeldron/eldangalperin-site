@@ -3,13 +3,15 @@ import OpenAI from "openai";
 import {
   ANTHROPIC_MODEL,
   OPENAI_MODEL,
+  OPENAI_MAX_COMPLETION_TOKENS,
+  OPENAI_REASONING_EFFORT,
   MAX_OUTPUT_TOKENS,
   buildSystemPrompt,
   sanitizeMessages,
   selectProvider,
   type ChatMessage,
 } from "@/lib/assistant";
-import { checkRateLimit, clientIp, reserveMonthlyBudget } from "@/lib/limits";
+import { checkDailyRateLimit, checkRateLimit, clientIp, reserveMonthlyBudget } from "@/lib/limits";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,7 +39,10 @@ async function streamReply(
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const stream = await client.chat.completions.create({
       model: OPENAI_MODEL,
-      max_tokens: MAX_OUTPUT_TOKENS,
+      // Reasoning models require max_completion_tokens (not max_tokens), and
+      // reasoning tokens draw from this budget — keep ample headroom.
+      max_completion_tokens: OPENAI_MAX_COMPLETION_TOKENS,
+      reasoning_effort: OPENAI_REASONING_EFFORT,
       stream: true,
       messages: [{ role: "system", content: system }, ...messages],
     });
@@ -76,6 +81,12 @@ export async function POST(req: Request) {
       429
     );
   }
+  if (!(await checkDailyRateLimit(ip))) {
+    return json(
+      { code: "rate_limited", error: "You've hit today's message limit — please reach out via the contact section." },
+      429
+    );
+  }
 
   let payload: unknown;
   try {
@@ -106,9 +117,20 @@ export async function POST(req: Request) {
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        await streamReply(provider, system, messages, (text) =>
-          controller.enqueue(encoder.encode(text))
-        );
+        let produced = false;
+        await streamReply(provider, system, messages, (text) => {
+          produced = true;
+          controller.enqueue(encoder.encode(text));
+        });
+        // Reasoning models can exhaust the token budget on hidden reasoning and
+        // emit no visible text — don't leave the user staring at an empty reply.
+        if (!produced) {
+          controller.enqueue(
+            encoder.encode(
+              "Sorry — I didn't catch that. Could you rephrase, or reach Eldan via the contact section?"
+            )
+          );
+        }
         controller.close();
       } catch (err) {
         console.error("[chat] stream error", err);

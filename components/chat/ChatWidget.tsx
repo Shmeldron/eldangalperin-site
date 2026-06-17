@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Bot, Mail, Send, Sparkles, X } from "lucide-react";
+import { track } from "@vercel/analytics";
 import { site } from "@/lib/site";
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -42,12 +43,16 @@ export function ChatWidget() {
   }, [messages, open]);
 
   useEffect(() => {
-    if (open) setTimeout(() => inputRef.current?.focus(), 120);
+    if (open) {
+      track("chat_opened");
+      setTimeout(() => inputRef.current?.focus(), 120);
+    }
   }, [open]);
 
   async function send(text: string) {
     const trimmed = text.trim();
     if (!trimmed || busy) return;
+    track("chat_message_sent");
 
     const history = [...messages.filter((m) => m !== GREETING), { role: "user", content: trimmed } as Msg];
     setMessages((m) => [...m, { role: "user", content: trimmed }, { role: "assistant", content: "" }]);
@@ -103,6 +108,7 @@ export function ChatWidget() {
         body: JSON.stringify({ email, note: leadNote.trim() }),
       });
       if (res.ok) {
+        track("lead_submitted");
         setLeadStatus("sent");
         setLeadFormOpen(false);
       } else if (res.status === 503) {

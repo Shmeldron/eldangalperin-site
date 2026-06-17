@@ -13,6 +13,7 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
 const PER_IP_LIMIT = Number(process.env.AI_RATE_LIMIT_PER_MIN ?? 8);
+const PER_IP_DAILY = Number(process.env.AI_RATE_LIMIT_PER_DAY ?? 30);
 const MONTHLY_CAP = Number(process.env.AI_MONTHLY_REQUEST_CAP ?? 1500);
 const LEAD_LIMIT = Number(process.env.LEAD_RATE_LIMIT_PER_MIN ?? 3);
 
@@ -40,14 +41,32 @@ const leadLimiter = redis
     })
   : null;
 
+// Second layer on the chat endpoint: caps how many requests one IP can make
+// per day, so a scripted abuser can't drain the monthly budget in minutes.
+const dailyLimiter = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(PER_IP_DAILY, "1 d"),
+      prefix: "eg:rl-day",
+    })
+  : null;
+
 // ---- in-memory fallbacks ----
+const MINUTE_MS = 60_000;
+const DAY_MS = 86_400_000;
 const memWindow = new Map<string, number[]>();
+const memDayWindow = new Map<string, number[]>();
 const memLeadWindow = new Map<string, number[]>();
 const memMonth = { key: "", count: 0 };
 
-function memSlidingWindow(map: Map<string, number[]>, ip: string, limit: number): boolean {
+function memSlidingWindow(
+  map: Map<string, number[]>,
+  ip: string,
+  limit: number,
+  windowMs = MINUTE_MS
+): boolean {
   const now = Date.now();
-  const cutoff = now - 60_000;
+  const cutoff = now - windowMs;
   const hits = (map.get(ip) ?? []).filter((t) => t > cutoff);
   hits.push(now);
   map.set(ip, hits);
@@ -60,6 +79,15 @@ export async function checkRateLimit(ip: string): Promise<boolean> {
     return success;
   }
   return memSlidingWindow(memWindow, ip, PER_IP_LIMIT);
+}
+
+/** Per-day per-IP cap on the chat endpoint (cheap abuse backstop). */
+export async function checkDailyRateLimit(ip: string): Promise<boolean> {
+  if (dailyLimiter) {
+    const { success } = await dailyLimiter.limit(ip);
+    return success;
+  }
+  return memSlidingWindow(memDayWindow, ip, PER_IP_DAILY, DAY_MS);
 }
 
 export async function checkLeadRateLimit(ip: string): Promise<boolean> {

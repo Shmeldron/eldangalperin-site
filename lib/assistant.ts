@@ -5,15 +5,37 @@ import { publishedProjects } from "./projects";
 export const MAX_INPUT_CHARS = 800;
 /** Max user/assistant turns kept from client-supplied history. */
 export const MAX_HISTORY_MESSAGES = 12;
-/** Cap on tokens the model may generate per reply. */
+/** Cap on tokens the model may generate per reply (Anthropic, non-reasoning). */
 export const MAX_OUTPUT_TOKENS = 500;
 
 /**
  * Provider is auto-selected from whichever API key is present (OpenAI wins if
  * both are set). Each model is overridable via its own env var.
  */
-export const OPENAI_MODEL = process.env.OPENAI_MODEL ?? "gpt-4o-mini";
+export const OPENAI_MODEL = process.env.OPENAI_MODEL ?? "gpt-5-mini";
 export const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5-20251001";
+
+/**
+ * GPT-5-class models are reasoning models. Two consequences for the OpenAI path:
+ *  1. Reasoning tokens count toward the output budget, so a tiny cap can be
+ *     consumed entirely by hidden reasoning and yield EMPTY visible output. We
+ *     give it real headroom (the cap is a ceiling, not a target — short replies
+ *     still cost little). Anthropic keeps the smaller MAX_OUTPUT_TOKENS.
+ *  2. Effort trades latency for depth. A scoped portfolio Q&A wants snappy, so
+ *     we default to "minimal". Override per deployment if needed.
+ */
+export const OPENAI_MAX_COMPLETION_TOKENS = Number(
+  process.env.OPENAI_MAX_COMPLETION_TOKENS ?? 1500
+);
+// gpt-5-mini supports minimal|low|medium|high (NOT "none"); "minimal" is the
+// fastest valid option. Unknown/invalid env values fall back to "minimal".
+const REASONING_EFFORTS = ["minimal", "low", "medium", "high"] as const;
+type ReasoningEffort = (typeof REASONING_EFFORTS)[number];
+export const OPENAI_REASONING_EFFORT: ReasoningEffort = REASONING_EFFORTS.includes(
+  process.env.OPENAI_REASONING_EFFORT as ReasoningEffort
+)
+  ? (process.env.OPENAI_REASONING_EFFORT as ReasoningEffort)
+  : "minimal";
 
 export type Provider = "openai" | "anthropic";
 
@@ -58,8 +80,9 @@ ${projectsContext()}
 
 # Voice
 - Direct, dry, and confident — the tone of a senior engineer, not a chirpy support bot. No filler, no "How can I help you today!", no emoji, no exclamation spam.
-- Speak about ${site.name} in the third person. Be concise: a few sentences.
+- Speak about ${site.name} in the third person. Be brief: 2–4 short sentences, ~80 words max. Lead with the answer; don't list everything you know.
 - Ground every answer in the work above with concrete specifics. Never invent metrics, employers, dates, clients, or technologies.
+- Reply in the visitor's language: if they write in Hebrew, answer in natural, fluent Hebrew; otherwise answer in English. Keep the same brevity and plain-prose rules in any language.
 
 # What you do NOT do
 - You are not a general assistant. Politely decline general coding help, world knowledge, essay writing, or anything off-topic, and redirect to ${site.name}'s work — declining is fine; it shows you're purpose-built.
@@ -78,7 +101,7 @@ For any of these, deflect: invite them to leave their email so ${site.name} can 
 - If they decline or ignore it, drop it completely — never ask again, never pressure.
 
 # Format
-- Plain text only. No markdown headers or code blocks unless explicitly asked.`;
+- Plain prose only. No bullet lists, numbered lists, headings, bold, or code blocks unless explicitly asked. Write in flowing sentences, like a sharp person typing a quick reply.`;
 }
 
 export type ChatMessage = { role: "user" | "assistant"; content: string };
