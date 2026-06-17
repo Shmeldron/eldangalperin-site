@@ -60,6 +60,16 @@ export type Dict = {
   };
   contact: { label: string; intro: string; reveal: string };
   footer: { builtBy: string };
+  caseStudy: {
+    back: string;
+    roleLabel: string;
+    problem: string;
+    built: string;
+    impact: string;
+    stack: string;
+    nextProject: string;
+    startProject: string;
+  };
 };
 
 export const DICT: Record<Locale, Dict> = {
@@ -107,6 +117,16 @@ export const DICT: Record<Locale, Dict> = {
       reveal: "click to reveal email",
     },
     footer: { builtBy: "built by eldan galperin" },
+    caseStudy: {
+      back: "back to work",
+      roleLabel: "role",
+      problem: "The problem",
+      built: "What I built",
+      impact: "Impact",
+      stack: "Stack",
+      nextProject: "next project",
+      startProject: "Start a project",
+    },
   },
   he: {
     nav: { work: "עבודות", about: "אודות", contact: "יצירת קשר" },
@@ -152,6 +172,78 @@ export const DICT: Record<Locale, Dict> = {
       reveal: "לחצו לחשיפת האימייל",
     },
     footer: { builtBy: "נבנה על ידי אלדן גלפרין" },
+    caseStudy: {
+      back: "חזרה לעבודות",
+      roleLabel: "תפקיד",
+      problem: "האתגר",
+      built: "מה בניתי",
+      impact: "תוצאות",
+      stack: "סטאק",
+      nextProject: "הפרויקט הבא",
+      startProject: "בוא נתחיל פרויקט",
+    },
+  },
+};
+
+/** Hebrew case-study body copy, by slug. English equivalents come from lib/projects.ts. */
+export const HE_CASE: Record<
+  string,
+  { problem: string; build: string[]; impact: string[] }
+> = {
+  stayyoung: {
+    problem:
+      "ייעוץ רווחה הוא לרוב גנרי וקל לנטוש. ב‑StayYoung יצאנו לבנות חוויה אישית ושיחתית שפוגשת אנשים בעברית, על המובייל, ומשתפרת לאורך זמן — שעונה על השאלות שלהם ברגע, לא אחרי חיפוש. זה אומר לבנות מוצר אמיתי, לא דף נחיתה.",
+    build: [
+      "אחריות מלאה על כל הסטאק מקצה לקצה — אפליקציית המשתמש, טובי (מאמן ה‑AI שבתוך האפליקציה), ופלטפורמת המנויים, החיובים והמשפכים שמריצה את הצד העסקי.",
+      "בניית טובי, מאמן ה‑AI: עיצוב פרומפטים ממוקדים, תשובות בעברית בסטרימינג, הקשר אישי לכל משתמש שנשמר על פני MongoDB ו‑MySQL, ומעקות בטיחות ששומרים על תשובות בטוחות ונאמנות למותג.",
+      "עיצוב מערכת UI עברית‑first, נכונה ל‑RTL, על React + Tailwind + shadcn — שנשארת מהירה גם על טלפון בינוני.",
+      "מידול הנתונים ב‑PostgreSQL עם row‑level security ו‑RPCs מסוג SECURITY DEFINER; תהליכי ההרשאות, ה‑OTP וההתראות רצים דרך Supabase Edge Functions.",
+    ],
+    impact: [
+      "חי ב‑App Store וב‑Google Play, עם משתמשים אמיתיים שמשתמשים בו מדי יום בעברית.",
+      "טובי עונה על מאות שאלות של משתמשים בשבוע — 24/7, עם מעקות נוקשים לעלות ולקצב.",
+      "מערכת עיצוב עברית‑first שומרת על חוויית מובייל מהירה ועקבית.",
+    ],
+  },
+  "stayyoung-platform": {
+    problem:
+      "להריץ עסק מבוסס מנויים אומר לתמרן בין משפכים, תשלומים, גבייה חוזרת, פרסום, פיננסים ותמיכה — בדרך כלל על פני עשרות כלי SaaS מנותקים. הפלטפורמה הזו מאחדת את כל זה למקום אחד, בנויה בהתאמה אישית לאופן שבו העסק באמת עובד.",
+    build: [
+      "מנוע משפכים רב‑שלבי (optin → מכירה → upsell → downsell → תודה) עם בונה שלבים ויזואלי ועריכה בעזרת AI.",
+      "חיובי מנויים על PayPlus עם גבייה חוזרת אוטומטית, ניסיונות חיוב חוזרים והתאמות מבוססות cron — לצד מסלול הגירה מ‑WooCommerce.",
+      "עוזרי AI ייעודיים לכל סוכן (בסיס ידע, sandbox ואנליטיקס משלהם), דשבורד פיננסי (תזרים, רווח והפסד, מע\"מ, תחזיות), קביעת פגישות מובנית, ואינטגרציית Meta Ads.",
+    ],
+    impact: [
+      "מפעילה עסק מנויים חי — מעל 5,000 לקוחות ומנויים על פני 11 משפכי מכירה.",
+      "שומרת על המסלול הקריטי לכסף פועל ללא התערבות — חיובים חוזרים, גבייה, ניסיונות חוזרים והתאמות.",
+      "משפכים, פרסום, פיננסים והזמנות חיים במקום אחד, בנויים סביב האופן שבו העסק באמת עובד.",
+    ],
+  },
+  "whatsapp-assistant": {
+    problem:
+      "רציתי עוזר שבאמת אשתמש בו מדי יום — בלי אפליקציה חדשה לפתוח, פשוט הצ'אט שאני כבר נמצא בו. וואטסאפ הוא המקום שבו ההודעות כבר נמצאות.",
+    build: [
+      "גישור בין וואטסאפ ל‑LLM באמצעות whatsapp-web.js — תמלול הודעות קוליות, תשובות מדוברות, וזיכרון לכל איש קשר באמצעות embeddings.",
+      "הוספת תזכורות, משימות cron, סיכום ערב ותדריך יומי — הכול נמסר דרך וואטסאפ.",
+      "אינטגרציה של Google APIs ושרתי כלים מסוג MCP כך שהעוזר מבצע פעולות אמיתיות, לא רק מנהל שיחה.",
+    ],
+    impact: [
+      "עוזר לשימוש יומיומי שזמין מכל צ'אט — עם קול וזיכרון.",
+      "מדגים תשתית tool‑use / MCP מבוססת LLM על ערוץ הודעות אמיתי.",
+    ],
+  },
+  "spaceship-simulator-jarvis": {
+    problem:
+      "איך כמה סוכנים אוטונומיים מתאמים ביניהם כדי להריץ מערכת מורכבת — בלי לכבול אותם לחומרה אמיתית? הסימולטור הזה הוא שדה הניסוי.",
+    build: [
+      "שלושה תהליכי סוכן ארוכי‑ריצה — אורקסטרטור Merlin ושני סוכני ship‑AI — שמתקשרים דרך פרוטוקולי אדפטרים.",
+      "שכבת mock‑adapter מלאה עם contract tests משותפים, כך שאדפטרים אמיתיים יוכלו להיכנס בהמשך בלי לגעת בלוגיקת הסוכנים.",
+      "דשבורד אופרטור מבוסס FastAPI ו‑runner מסוג bot‑bench להרצת המערכת כולה.",
+    ],
+    impact: [
+      "ארכיטקטורה נקייה, test‑first, לתיאום בין סוכנים מרובים.",
+      "עיצוב מבוסס adapter ו‑contract‑test שומר על הסוכנים ניתנים להחלפה ולאימות.",
+    ],
   },
 };
 
