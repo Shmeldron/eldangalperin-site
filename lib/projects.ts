@@ -116,7 +116,7 @@ export const projects: Project[] = [
     problem:
       "Running a subscription business means juggling funnels, payments, dunning, ads, finance, and support — usually across a dozen disconnected SaaS tools. This platform pulls all of it into one place, custom-built for how the business actually operates.",
     build: [
-      "A multi-step funnel engine (optin → sales → upsell → downsell → thank-you) with a visual, node-based builder and AI-assisted editing.",
+      "A multi-step funnel engine (optin → sales → upsell → downsell → thank-you) with a visual step builder and AI-assisted editing.",
       "Subscription billing on PayPlus with automated dunning, retries, and cron-driven reconciliation — plus a WooCommerce migration path.",
       "Per-agent AI assistants (own knowledge base, sandbox, analytics), a finance dashboard (cashflow, P&L, VAT, forecasts), embedded meeting booking, and Meta Ads integration.",
     ],
@@ -125,9 +125,10 @@ export const projects: Project[] = [
       "Keeps the money-critical path running unattended — recurring billing, dunning, retries, and reconciliation.",
       "Funnels, ads, finance, and bookings live in one place, built around how the business actually operates.",
     ],
-
     screenshots: [
-      { src: "/work/stayyoung-platform/funnel-builder.png", alt: "StayYoung platform — visual funnel builder", frame: "browser" },
+      { src: "/work/stayyoung-platform/funnel-builder.png", alt: "StayYoung platform — funnel builder (sales → upsell → thank-you)", frame: "browser", ready: true },
+      { src: "/work/stayyoung-platform/ai-agents.png", alt: "StayYoung platform — AI agents dashboard", frame: "browser", ready: true },
+      { src: "/work/stayyoung-platform/automations.png", alt: "StayYoung platform — billing & dunning automations", frame: "browser", ready: true },
     ],
   },
   {
