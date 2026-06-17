@@ -9,7 +9,7 @@ import {
   selectProvider,
   type ChatMessage,
 } from "@/lib/assistant";
-import { checkRateLimit, reserveMonthlyBudget } from "@/lib/limits";
+import { checkRateLimit, clientIp, reserveMonthlyBudget } from "@/lib/limits";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,12 +19,6 @@ function json(body: unknown, status: number) {
     status,
     headers: { "content-type": "application/json" },
   });
-}
-
-function clientIp(req: Request): string {
-  const xff = req.headers.get("x-forwarded-for");
-  if (xff) return xff.split(",")[0].trim();
-  return req.headers.get("x-real-ip") ?? "unknown";
 }
 
 function monthKey(): string {

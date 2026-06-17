@@ -14,6 +14,7 @@ import { Redis } from "@upstash/redis";
 
 const PER_IP_LIMIT = Number(process.env.AI_RATE_LIMIT_PER_MIN ?? 8);
 const MONTHLY_CAP = Number(process.env.AI_MONTHLY_REQUEST_CAP ?? 1500);
+const LEAD_LIMIT = Number(process.env.LEAD_RATE_LIMIT_PER_MIN ?? 3);
 
 const hasUpstash = Boolean(
   process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
@@ -31,17 +32,26 @@ const ipLimiter = redis
     })
   : null;
 
+const leadLimiter = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(LEAD_LIMIT, "1 m"),
+      prefix: "eg:lead-rl",
+    })
+  : null;
+
 // ---- in-memory fallbacks ----
 const memWindow = new Map<string, number[]>();
+const memLeadWindow = new Map<string, number[]>();
 const memMonth = { key: "", count: 0 };
 
-function memRateLimit(ip: string): boolean {
+function memSlidingWindow(map: Map<string, number[]>, ip: string, limit: number): boolean {
   const now = Date.now();
   const cutoff = now - 60_000;
-  const hits = (memWindow.get(ip) ?? []).filter((t) => t > cutoff);
+  const hits = (map.get(ip) ?? []).filter((t) => t > cutoff);
   hits.push(now);
-  memWindow.set(ip, hits);
-  return hits.length <= PER_IP_LIMIT;
+  map.set(ip, hits);
+  return hits.length <= limit;
 }
 
 export async function checkRateLimit(ip: string): Promise<boolean> {
@@ -49,7 +59,22 @@ export async function checkRateLimit(ip: string): Promise<boolean> {
     const { success } = await ipLimiter.limit(ip);
     return success;
   }
-  return memRateLimit(ip);
+  return memSlidingWindow(memWindow, ip, PER_IP_LIMIT);
+}
+
+export async function checkLeadRateLimit(ip: string): Promise<boolean> {
+  if (leadLimiter) {
+    const { success } = await leadLimiter.limit(ip);
+    return success;
+  }
+  return memSlidingWindow(memLeadWindow, ip, LEAD_LIMIT);
+}
+
+/** First client IP from proxy headers, or "unknown". Shared by both API routes. */
+export function clientIp(req: Request): string {
+  const xff = req.headers.get("x-forwarded-for");
+  if (xff) return xff.split(",")[0].trim();
+  return req.headers.get("x-real-ip") ?? "unknown";
 }
 
 /** Returns true if a request is still within the monthly budget (and reserves one). */
