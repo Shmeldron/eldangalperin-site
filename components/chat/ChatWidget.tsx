@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Bot, Send, Sparkles, X } from "lucide-react";
+import { Bot, Mail, Send, Sparkles, X } from "lucide-react";
 import { site } from "@/lib/site";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
 const SUGGESTIONS = [
-  "What does Eldan do?",
-  "Tell me about StayYoung",
+  "Can Eldan help with my AI product?",
+  "What's he like to work with?",
   "Is he available for freelance?",
 ];
 
@@ -26,6 +26,10 @@ export function ChatWidget() {
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [leadFormOpen, setLeadFormOpen] = useState(false);
+  const [leadEmail, setLeadEmail] = useState("");
+  const [leadNote, setLeadNote] = useState("");
+  const [leadStatus, setLeadStatus] = useState<"idle" | "sending" | "sent" | "error" | "offline">("idle");
 
   useEffect(() => {
     const onOpen = () => setOpen(true);
@@ -85,6 +89,30 @@ export function ChatWidget() {
       next[next.length - 1] = { role: "assistant", content };
       return next;
     });
+  }
+
+  async function submitLead(e: FormEvent) {
+    e.preventDefault();
+    const email = leadEmail.trim();
+    if (!email || leadStatus === "sending") return;
+    setLeadStatus("sending");
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email, note: leadNote.trim() }),
+      });
+      if (res.ok) {
+        setLeadStatus("sent");
+        setLeadFormOpen(false);
+      } else if (res.status === 503) {
+        setLeadStatus("offline");
+      } else {
+        setLeadStatus("error");
+      }
+    } catch {
+      setLeadStatus("error");
+    }
   }
 
   return (
@@ -160,6 +188,71 @@ export function ChatWidget() {
                     </button>
                   ))}
                 </div>
+              )}
+
+              {messages.length > 1 && leadStatus !== "sent" && (
+                <div className="pt-1">
+                  {!leadFormOpen && (leadStatus === "idle" || leadStatus === "error") && (
+                    <button
+                      type="button"
+                      onClick={() => setLeadFormOpen(true)}
+                      className="inline-flex items-center gap-1.5 text-xs text-faint transition-colors hover:text-accent"
+                    >
+                      <Mail className="h-3.5 w-3.5" />
+                      Share your email for Eldan
+                    </button>
+                  )}
+
+                  {leadFormOpen && (
+                    <form onSubmit={submitLead} className="space-y-2 rounded-xl border border-border bg-card-2 p-3">
+                      <input
+                        type="email"
+                        required
+                        value={leadEmail}
+                        onChange={(e) => setLeadEmail(e.target.value)}
+                        maxLength={120}
+                        placeholder="you@company.com"
+                        className="w-full rounded-lg bg-card px-2.5 py-1.5 text-sm text-foreground outline-none placeholder:text-faint"
+                      />
+                      <input
+                        value={leadNote}
+                        onChange={(e) => setLeadNote(e.target.value)}
+                        maxLength={600}
+                        placeholder="One line about your project (optional)"
+                        className="w-full rounded-lg bg-card px-2.5 py-1.5 text-sm text-foreground outline-none placeholder:text-faint"
+                      />
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="submit"
+                          disabled={leadStatus === "sending" || !leadEmail.trim()}
+                          className="rounded-full bg-accent px-3 py-1.5 text-xs font-medium text-[#04130c] transition-opacity disabled:opacity-40"
+                        >
+                          {leadStatus === "sending" ? "Sending…" : "Send to Eldan"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setLeadFormOpen(false)}
+                          className="text-xs text-faint hover:text-foreground"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                      {leadStatus === "error" && (
+                        <p className="text-xs text-red-400">Couldn&apos;t send — try the contact section on the site.</p>
+                      )}
+                    </form>
+                  )}
+
+                  {leadStatus === "offline" && (
+                    <p className="text-xs text-faint">
+                      Reach Eldan directly via the contact section on the site.
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {leadStatus === "sent" && (
+                <p className="pt-1 text-xs text-accent">Got it — Eldan will be in touch.</p>
               )}
             </div>
 
