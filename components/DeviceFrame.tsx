@@ -22,7 +22,7 @@ export function DeviceFrame({
       <div className={cn("relative mx-auto w-full max-w-[260px]", className)}>
         <div className="rounded-[2rem] border border-border-strong bg-card-2 p-2 shadow-2xl shadow-black/40">
           <div className="relative aspect-[9/19] overflow-hidden rounded-[1.5rem] bg-background">
-            <span className="absolute left-1/2 top-2 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-border-strong" />
+            <span className="absolute start-1/2 top-2 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-border-strong" />
             <FrameImage shot={shot} priority={priority} sizes="260px" />
           </div>
         </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { cookies } from "next/headers";
+import { Space_Grotesk, JetBrains_Mono, Rubik, IBM_Plex_Sans_Hebrew } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { Header } from "@/components/Header";
@@ -7,7 +8,9 @@ import { Footer } from "@/components/Footer";
 import { CommandPalette } from "@/components/CommandPalette";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 import { VercelAnalytics } from "@/components/VercelAnalytics";
-import { Chrome } from "@/components/Chrome";
+import { LangSwitch } from "@/components/i18n/LangSwitch";
+import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
+import { DIR, LOCALE_COOKIE, type Locale } from "@/lib/i18n/content";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -18,6 +21,22 @@ const spaceGrotesk = Space_Grotesk({
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  display: "swap",
+});
+
+// Hebrew faces: Rubik for display headings, IBM Plex Sans Hebrew for body.
+// Applied by lang-scoped rules in globals.css (English keeps Space Grotesk).
+const rubikHe = Rubik({
+  variable: "--font-rubik-he",
+  subsets: ["hebrew", "latin"],
+  weight: ["500", "600", "700", "800"],
+  display: "swap",
+});
+
+const plexHe = IBM_Plex_Sans_Hebrew({
+  variable: "--font-plex-he",
+  subsets: ["hebrew", "latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -55,27 +74,30 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // Cookie drives the first-paint direction/language so returning Hebrew
+  // visitors don't see an English flash.
+  const cookieStore = await cookies();
+  const locale: Locale = cookieStore.get(LOCALE_COOKIE)?.value === "he" ? "he" : "en";
+
   return (
     <html
-      lang="en"
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      lang={locale}
+      dir={DIR[locale]}
+      data-scroll-behavior="smooth"
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${rubikHe.variable} ${plexHe.variable} h-full antialiased`}
     >
       <body className="min-h-full">
-        <Chrome
-          header={<Header />}
-          footer={<Footer />}
-          overlays={
-            <>
-              <CommandPalette />
-              <ChatWidget />
-            </>
-          }
-        >
-          {children}
-        </Chrome>
+        <LocaleProvider initialLocale={locale}>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <LangSwitch />
+          <CommandPalette />
+          <ChatWidget />
+        </LocaleProvider>
         <VercelAnalytics />
       </body>
     </html>

@@ -56,6 +56,19 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Per-language fonts (scoped by lang so cross-sliding EN/HE content each keep
+   their own typeface). English: Space Grotesk. Hebrew: IBM Plex Sans Hebrew,
+   with Rubik for display headings (.he-display). Mono accents stay JetBrains. */
+[lang="en"] {
+  font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+[lang="he"] {
+  font-family: var(--font-plex-he), "Assistant", system-ui, sans-serif;
+}
+[lang="he"] .he-display {
+  font-family: var(--font-rubik-he), var(--font-plex-he), sans-serif;
+}
+
 ::selection {
   background: color-mix(in srgb, var(--accent) 30%, transparent);
   color: #fff;

@@ -52,8 +52,8 @@ export function HeProjectCard({
       style={{ rotateX: srx, rotateY: sry, transformPerspective: 1000 }}
       className="card group relative h-full overflow-hidden p-6 transition-colors duration-300 hover:border-accent/40 sm:p-7"
     >
-      {/* hover glow — pinned to the inline-start (end of an RTL card) */}
-      <div className="pointer-events-none absolute -top-20 -left-20 h-48 w-48 rounded-full bg-accent/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
+      {/* hover glow — pinned to the inline-end corner, mirrors in RTL */}
+      <div className="pointer-events-none absolute -top-20 -end-20 h-48 w-48 rounded-full bg-accent/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
 
       <div className="flex items-center justify-between font-mono text-xs text-faint" dir="ltr">
         <span>{String(index + 1).padStart(2, "0")}</span>
