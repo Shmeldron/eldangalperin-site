@@ -49,12 +49,15 @@ export const projects: Project[] = [
   {
     slug: "stayyoung",
     title: "StayYoung",
-    kicker: "AI wellness platform",
+    kicker: "AI wellness app",
     tagline:
-      "An AI-driven wellness platform — owned end to end, from the member app to the on-site AI coach to the subscription platform behind it.",
+      "A live, AI-driven wellness app — owned end to end, from the member experience to Tovi, the in-app AI coach, to the platform behind it.",
     year: "2025–26",
     role: "Founding / lead full-stack engineer",
-    links: [{ label: "Visit StayYoung", href: "https://stayyoung.live" }],
+    links: [
+      { label: "App Store", href: "https://apps.apple.com/us/app/stayyoung/id6759099350" },
+      { label: "Google Play", href: "https://play.google.com/store/apps/details?id=stayyoung.app.lovable" },
+    ],
     stack: [
       "React",
       "Next.js",
@@ -62,55 +65,32 @@ export const projects: Project[] = [
       "Supabase",
       "PostgreSQL / RLS",
       "Edge Functions",
+      "Node.js / Express",
       "OpenAI",
       "Tailwind",
     ],
     featured: true,
     published: true,
     problem:
-      "Wellness guidance is generic and hard to stick with. StayYoung set out to deliver a personalised, conversational experience that meets people in Hebrew, on mobile, and adapts to them over time — which meant building a real product, not a landing page.",
+      "Wellness guidance is generic and easy to drop. StayYoung set out to deliver a personalised, conversational experience that meets people in Hebrew, on mobile, and adapts over time — answering their questions in the moment, not after a search. That meant building a real product, not a landing page.",
     build: [
-      "Owned the full stack end to end: the member app, the AI coach, and the subscription, billing, and funnel platform that runs the business side.",
-      "Built Tovi, the in-app AI coach — scoped prompts, streaming replies, and guardrails for safe, on-brand answers (its own case study).",
-      "Designed a Hebrew-first, RTL-correct UI system on React + Tailwind + shadcn that stays fast on mobile.",
-      "Modelled the data in PostgreSQL with row-level security and SECURITY DEFINER RPCs; auth, OTP, and notification flows wired through Supabase Edge Functions.",
+      "Owned the full stack end to end — the member app, Tovi the in-app AI coach, and the subscription, billing, and funnel platform that runs the business side.",
+      "Built Tovi, the AI coach: scoped prompts, streaming Hebrew replies, per-member context persisted across MongoDB + MySQL, and guardrails that keep answers safe and on-brand.",
+      "Designed a Hebrew-first, RTL-correct UI system on React + Tailwind + shadcn that stays fast on a mid-range phone.",
+      "Modelled the data in PostgreSQL with row-level security and SECURITY DEFINER RPCs; auth, OTP, and notification flows run through Supabase Edge Functions.",
     ],
     impact: [
-      // TODO(eldan): replace with real, defensible metrics.
-      "Shipped the platform from zero to production as the core engineer.",
-      "An AI coach answers member questions 24/7, with hard cost/rate guardrails.",
-      "RTL-first design system keeps the mobile experience fast and consistent.",
+      // Metrics from live PostHog data (window opened 2026-06-11). Phrased conservatively
+      // so they stay true as counts grow — revisit if you want sharper, dated figures.
+      "Live on the App Store and Google Play, with real members using it daily in Hebrew.",
+      "Tovi fields hundreds of member questions a week — 24/7, with hard cost and rate guardrails.",
+      "An RTL-first design system keeps the mobile experience fast and consistent.",
     ],
     screenshots: [
       { src: "/work/stayyoung/home.png", alt: "StayYoung member app — personalised home", frame: "phone", ready: true },
+      { src: "/work/stayyoung/chat.png", alt: "Tovi, the AI coach, answering a member's question in Hebrew", frame: "phone", ready: true },
       { src: "/work/stayyoung/cover.png", alt: "StayYoung member app — recipe & content library", frame: "phone", ready: true },
       { src: "/work/stayyoung/journal.png", alt: "StayYoung app — live sessions & journal", frame: "phone", ready: true },
-    ],
-  },
-  {
-    slug: "tovi",
-    title: "Tovi — AI Wellness Coach",
-    kicker: "in-app AI assistant",
-    tagline:
-      "The conversational AI coach inside StayYoung — answering members' nutrition, fasting, and wellness questions in natural Hebrew, 24/7.",
-    year: "2025–26",
-    role: "Solo build",
-    stack: ["Node.js", "Express", "OpenAI", "MongoDB", "MySQL", "Streaming", "Hebrew / RTL"],
-    featured: true,
-    published: true,
-    problem:
-      "Static content doesn't keep people on track — they have questions in the moment. Tovi is the always-available coach that answers in natural Hebrew, right inside the app, instead of sending members off to search.",
-    build: [
-      "Built the assistant backend on Express + OpenAI — scoped prompts, streaming replies, and guardrails so answers stay on-brand and safe.",
-      "Persisted conversations and context (MongoDB + MySQL) so Tovi can personalise and follow the thread.",
-      "Wired Tovi straight into the member app's chat UI — Hebrew-first, RTL-correct, and fast on mobile.",
-    ],
-    impact: [
-      "An always-on AI coach handling member questions 24/7, inside the product.",
-      "Production LLM plumbing end to end: prompts, streaming, persistence, and guardrails.",
-    ],
-    screenshots: [
-      { src: "/work/stayyoung/chat.png", alt: "Tovi answering a member's question in Hebrew", frame: "phone", ready: true },
     ],
   },
   {
@@ -141,9 +121,11 @@ export const projects: Project[] = [
       "Per-agent AI assistants (own knowledge base, sandbox, analytics), a finance dashboard (cashflow, P&L, VAT, forecasts), embedded meeting booking, and Meta Ads integration.",
     ],
     impact: [
-      "Replaces a stack of SaaS tools with one platform tailored to the business.",
-      "Automates the money-critical parts — recurring billing, dunning, and reconciliation.",
+      "Powers a live subscription business — 5,000+ customers and subscriptions across 11 sales funnels.",
+      "Keeps the money-critical path running unattended — recurring billing, dunning, retries, and reconciliation.",
+      "Funnels, ads, finance, and bookings live in one place, built around how the business actually operates.",
     ],
+
     screenshots: [
       { src: "/work/stayyoung-platform/funnel-builder.png", alt: "StayYoung platform — visual funnel builder", frame: "browser" },
     ],

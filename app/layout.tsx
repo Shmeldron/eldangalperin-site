@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { CommandPalette } from "@/components/CommandPalette";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 import { VercelAnalytics } from "@/components/VercelAnalytics";
+import { Chrome } from "@/components/Chrome";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -63,11 +64,18 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <CommandPalette />
-        <ChatWidget />
+        <Chrome
+          header={<Header />}
+          footer={<Footer />}
+          overlays={
+            <>
+              <CommandPalette />
+              <ChatWidget />
+            </>
+          }
+        >
+          {children}
+        </Chrome>
         <VercelAnalytics />
       </body>
     </html>
