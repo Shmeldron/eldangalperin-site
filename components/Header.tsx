@@ -44,7 +44,8 @@ export function Header() {
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6 sm:px-10">
         <Link href="/" className="group flex items-center gap-2 text-sm font-semibold tracking-tight">
           <span dir="ltr" className="font-mono text-accent">~/</span>
-          <span className="text-foreground">{wordmark}</span>
+          {/* hide the name only on very narrow screens so it can't meet the centered toggle */}
+          <span className="text-foreground max-[359px]:hidden">{wordmark}</span>
         </Link>
 
         {/* nav + ⌘K grouped on the end side, leaving the center clear for the

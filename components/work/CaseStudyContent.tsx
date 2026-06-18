@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import type { Project } from "@/lib/projects";
 import { DeviceFrame } from "@/components/DeviceFrame";
@@ -28,6 +28,7 @@ export function CaseStudyContent({
   nextProject?: { slug: string; title: string };
 }) {
   const { locale } = useLocale();
+  const reduce = useReducedMotion();
   const ui = DICT[locale].caseStudy;
 
   // Hebrew kicker/tagline/role (fall back to English project fields).
@@ -48,10 +49,10 @@ export function CaseStudyContent({
         key={locale}
         dir={DIR[locale]}
         lang={locale}
-        initial={{ opacity: 0, y: 12 }}
+        initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 12 }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        exit={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
+        transition={{ duration: reduce ? 0.15 : 0.35, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto w-full max-w-4xl px-6 pb-24 pt-28 sm:px-10"
       >
         <Link

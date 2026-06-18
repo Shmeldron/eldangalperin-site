@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useRef } from "react";
 import { motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
+import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/lib/projects";
 import { DeviceFrame } from "@/components/DeviceFrame";
 import { TerminalMotif } from "@/components/TerminalMotif";
@@ -10,9 +12,9 @@ import { TerminalMotif } from "@/components/TerminalMotif";
 export type HeCopy = { kicker: string; tagline: string; role: string };
 
 /**
- * Hebrew (RTL) project card. Mirrors the English <ProjectCard> — same 3D tilt,
- * hover glow, terminal motif / device frame — with Hebrew copy. English tokens
- * (name, year, stack) stay LTR + mono.
+ * Project card. Links to the case study; mirrors the English original — 3D tilt,
+ * hover glow, terminal motif / device frame. English tokens (name, year, stack)
+ * stay LTR + mono; the corner arrow mirrors in RTL.
  */
 export function HeProjectCard({
   project,
@@ -45,55 +47,65 @@ export function HeProjectCard({
   }
 
   return (
-    <motion.article
-      ref={ref}
-      onMouseMove={onMove}
-      onMouseLeave={reset}
-      style={{ rotateX: srx, rotateY: sry, transformPerspective: 1000 }}
-      className="card group relative h-full overflow-hidden p-6 transition-colors duration-300 hover:border-accent/40 sm:p-7"
+    <Link
+      href={`/work/${project.slug}`}
+      aria-label={`${project.title} — ${he.kicker}`}
+      className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
-      {/* hover glow — pinned to the inline-end corner, mirrors in RTL */}
-      <div className="pointer-events-none absolute -top-20 -end-20 h-48 w-48 rounded-full bg-accent/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
+      <motion.article
+        ref={ref}
+        onMouseMove={onMove}
+        onMouseLeave={reset}
+        style={{ rotateX: srx, rotateY: sry, transformPerspective: 1000 }}
+        className="card relative h-full overflow-hidden p-6 transition-colors duration-300 group-hover:border-accent/40 sm:p-7"
+      >
+        {/* hover glow — pinned to the inline-end corner, mirrors in RTL */}
+        <div className="pointer-events-none absolute -top-20 -end-20 h-48 w-48 rounded-full bg-accent/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
 
-      <div className="flex items-center justify-between font-mono text-xs text-faint" dir="ltr">
-        <span>{String(index + 1).padStart(2, "0")}</span>
-        <span>{project.year}</span>
-      </div>
-
-      <div className="mt-4" style={{ transform: "translateZ(40px)" }}>
-        <div dir="ltr">
-          {project.kind === "service" ? (
-            <TerminalMotif lines={project.terminal ?? []} title={project.slug} />
-          ) : (
-            <DeviceFrame shot={project.screenshots[0]} />
-          )}
+        <div className="flex items-center justify-between font-mono text-xs text-faint" dir="ltr">
+          <span>{String(index + 1).padStart(2, "0")}</span>
+          <span>{project.year}</span>
         </div>
-      </div>
 
-      <div className="mt-6">
-        <h3 className="text-xl font-semibold tracking-tight" dir="ltr">
-          {project.title}
-        </h3>
-        <p className="mt-1 text-xs font-medium uppercase tracking-wider text-accent">
-          {he.kicker}
-        </p>
-      </div>
+        <div className="mt-4" style={{ transform: "translateZ(40px)" }}>
+          <div dir="ltr">
+            {project.kind === "service" ? (
+              <TerminalMotif lines={project.terminal ?? []} title={project.slug} />
+            ) : (
+              <DeviceFrame shot={project.screenshots[0]} />
+            )}
+          </div>
+        </div>
 
-      <p className="mt-3 text-sm leading-relaxed text-muted">{he.tagline}</p>
+        <div className="mt-6 flex items-start justify-between gap-4">
+          <div>
+            <h3 className="text-xl font-semibold tracking-tight" dir="ltr">
+              {project.title}
+            </h3>
+            <p className="mt-1 text-xs font-medium uppercase tracking-wider text-accent">
+              {he.kicker}
+            </p>
+          </div>
+          {/* rtl:-scale-x-100 flips the arrow (and its hover nudge) for RTL */}
+          <ArrowUpRight className="h-5 w-5 shrink-0 text-faint transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent rtl:-scale-x-100" />
+        </div>
 
-      <div className="mt-5 flex flex-wrap gap-1.5">
-        {project.stack.slice(0, 4).map((t) => (
-          <span
-            key={t}
-            dir="ltr"
-            className="rounded-full border border-border bg-card-2 px-2.5 py-1 font-mono text-[11px] text-muted"
-          >
-            {t}
-          </span>
-        ))}
-      </div>
+        <p className="mt-3 text-sm leading-relaxed text-muted">{he.tagline}</p>
 
-      <p className="mt-4 text-xs text-faint">{he.role}</p>
-    </motion.article>
+        <div className="mt-5 flex flex-wrap gap-1.5">
+          {project.stack.slice(0, 4).map((t) => (
+            <span
+              key={t}
+              dir="ltr"
+              className="rounded-full border border-border bg-card-2 px-2.5 py-1 font-mono text-[11px] text-muted"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+
+        <p className="mt-4 text-xs text-faint">{he.role}</p>
+      </motion.article>
+    </Link>
   );
 }

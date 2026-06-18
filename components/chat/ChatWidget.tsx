@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useAnimationControls, useReducedMotion } from "motion/react";
 import { Bot, Mail, Send, Sparkles, X } from "lucide-react";
 import { track } from "@vercel/analytics";
 import { DICT, DIR } from "@/lib/i18n/content";
@@ -31,6 +31,21 @@ export function ChatWidget() {
   const [leadEmail, setLeadEmail] = useState("");
   const [leadNote, setLeadNote] = useState("");
   const [leadStatus, setLeadStatus] = useState<"idle" | "sending" | "sent" | "error" | "offline">("idle");
+
+  // Slide the launcher to the opposite corner when the language flips. The
+  // button is anchored `end-5` (bottom-right in EN, bottom-left in HE); we start
+  // it visually at the OLD corner and animate the transform back to the anchor.
+  const launcher = useAnimationControls();
+  const localeRef = useRef(locale);
+  useEffect(() => {
+    if (localeRef.current === locale) return;
+    localeRef.current = locale;
+    setOpen(false); // re-anchor cleanly; don't fly an open panel across
+    if (reduce) return;
+    const travel = window.innerWidth - 56 - 40; // button width + both 20px margins
+    launcher.set({ x: locale === "he" ? travel : -travel });
+    launcher.start({ x: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } });
+  }, [locale, reduce, launcher]);
 
   useEffect(() => {
     const onOpen = () => setOpen(true);
@@ -123,28 +138,29 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Launcher */}
-      <motion.button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        aria-label={t.openAria}
-        initial={false}
-        whileHover={reduce ? undefined : { scale: 1.05 }}
-        whileTap={reduce ? undefined : { scale: 0.95 }}
-        className="fixed bottom-5 right-5 z-40 inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent text-[#04130c] shadow-[0_0_40px_-8px] shadow-accent/60"
-      >
-        <AnimatePresence mode="wait" initial={false}>
-          {open ? (
-            <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
-              <X className="h-6 w-6" />
-            </motion.span>
-          ) : (
-            <motion.span key="bot" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
-              <Bot className="h-6 w-6" />
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </motion.button>
+      {/* Launcher — wrapper handles the fixed anchor + slide; button handles hover */}
+      <motion.div animate={launcher} className="fixed bottom-5 end-5 z-40">
+        <motion.button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-label={t.openAria}
+          whileHover={reduce ? undefined : { scale: 1.05 }}
+          whileTap={reduce ? undefined : { scale: 0.95 }}
+          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent text-[#04130c] shadow-[0_0_40px_-8px] shadow-accent/60"
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            {open ? (
+              <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
+                <X className="h-6 w-6" />
+              </motion.span>
+            ) : (
+              <motion.span key="bot" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
+                <Bot className="h-6 w-6" />
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.button>
+      </motion.div>
 
       {/* Panel */}
       <AnimatePresence>
@@ -155,7 +171,7 @@ export function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.96 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-24 right-5 z-40 flex h-[min(560px,75vh)] w-[min(380px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-border-strong bg-card shadow-2xl shadow-black/60"
+            className="fixed bottom-24 end-5 z-40 flex h-[min(560px,75vh)] w-[min(380px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-border-strong bg-card shadow-2xl shadow-black/60"
           >
             {/* header */}
             <div className="flex items-center gap-3 border-b border-border bg-card-2 px-4 py-3">
@@ -169,7 +185,7 @@ export function ChatWidget() {
             </div>
 
             {/* messages */}
-            <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+            <div ref={scrollRef} aria-live="polite" className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
               {/* greeting (presentational, follows the toggle) */}
               <div dir="auto" className="me-auto max-w-[85%] rounded-2xl rounded-bl-sm bg-card-2 px-3.5 py-2 text-sm text-muted">
                 {t.greeting}
@@ -281,6 +297,7 @@ export function ChatWidget() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 maxLength={800}
+                aria-label={t.placeholder}
                 placeholder={t.placeholder}
                 className="flex-1 bg-transparent px-2 text-sm text-foreground outline-none placeholder:text-faint"
               />
