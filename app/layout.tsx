@@ -40,39 +40,52 @@ const plexHe = IBM_Plex_Sans_Hebrew({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: {
-    default: `${site.name} — ${site.role}`,
-    template: `%s — ${site.name}`,
-  },
-  description: site.description,
-  applicationName: site.name,
-  authors: [{ name: site.name, url: site.url }],
-  creator: site.name,
-  keywords: [
-    "Eldan Galperin",
-    "full-stack engineer",
-    "AI engineer",
-    "Next.js",
-    "TypeScript",
-    "LLM products",
-    "freelance",
-  ],
-  openGraph: {
-    type: "website",
-    url: site.url,
-    title: `${site.name} — ${site.role}`,
+// Metadata is locale-aware: og:locale reflects the cookie that drives <html lang>,
+// and the other language is advertised as an alternate so crawlers/social know the
+// page is also available in Hebrew (served via the in-page toggle).
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = await cookies();
+  const locale: Locale = cookieStore.get(LOCALE_COOKIE)?.value === "he" ? "he" : "en";
+  const ogLocale = locale === "he" ? "he_IL" : "en_US";
+  const ogAlternate = locale === "he" ? "en_US" : "he_IL";
+
+  return {
+    metadataBase: new URL(site.url),
+    title: {
+      default: `${site.name} — ${site.role}`,
+      template: `%s — ${site.name}`,
+    },
     description: site.description,
-    siteName: site.name,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${site.name} — ${site.role}`,
-    description: site.description,
-  },
-  robots: { index: true, follow: true },
-};
+    applicationName: site.name,
+    authors: [{ name: site.name, url: site.url }],
+    creator: site.name,
+    keywords: [
+      "Eldan Galperin",
+      "full-stack engineer",
+      "AI engineer",
+      "Next.js",
+      "TypeScript",
+      "LLM products",
+      "freelance",
+    ],
+    alternates: { canonical: site.url },
+    openGraph: {
+      type: "website",
+      url: site.url,
+      title: `${site.name} — ${site.role}`,
+      description: site.description,
+      siteName: site.name,
+      locale: ogLocale,
+      alternateLocale: ogAlternate,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${site.name} — ${site.role}`,
+      description: site.description,
+    },
+    robots: { index: true, follow: true },
+  };
+}
 
 export default async function RootLayout({
   children,

@@ -70,6 +70,8 @@ function FrameImage({
   if (!shot.ready) {
     return (
       <div
+        role="img"
+        aria-label={shot.alt}
         className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-center"
         style={{
           background:

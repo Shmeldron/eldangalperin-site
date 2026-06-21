@@ -10,11 +10,16 @@ import {
   User,
   FolderGit2,
 } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "@/components/icons/Brand";
+import { LinkedinIcon } from "@/components/icons/Brand";
 import { publishedProjects } from "@/lib/projects";
 import { site, emailAddress } from "@/lib/site";
+import { DICT, DIR } from "@/lib/i18n/content";
+import { useLocale } from "@/lib/i18n/LocaleProvider";
 
 const OPEN_EVENT = "eg:open-command-palette";
+
+const HEADING_CLASS =
+  "px-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wider [&_[cmdk-group-heading]]:text-muted";
 
 /** Imperatively open the palette from anywhere (e.g. the header button). */
 export function openCommandPalette() {
@@ -23,6 +28,8 @@ export function openCommandPalette() {
 
 export function CommandPalette() {
   const router = useRouter();
+  const { locale } = useLocale();
+  const t = DICT[locale].cmd;
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -50,44 +57,45 @@ export function CommandPalette() {
     <Command.Dialog
       open={open}
       onOpenChange={setOpen}
-      label="Command palette"
+      dir={DIR[locale]}
+      label={t.placeholder}
       className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-[15vh]"
     >
-      {/* overlay */}
-      <button
-        aria-label="Close"
+      {/* backdrop — presentational; cmdk handles Esc + outside-click dismissal */}
+      <div
+        aria-hidden
         onClick={() => setOpen(false)}
         className="fixed inset-0 bg-black/60 backdrop-blur-sm"
       />
       <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-border-strong bg-card shadow-2xl shadow-black/60">
         <Command.Input
-          placeholder="Type a command or search…"
-          className="w-full border-b border-border bg-transparent px-5 py-4 text-sm text-foreground outline-none placeholder:text-faint"
+          placeholder={t.placeholder}
+          className="w-full border-b border-border bg-transparent px-5 py-4 text-sm text-foreground outline-none placeholder:text-muted"
         />
         <Command.List className="max-h-[330px] overflow-y-auto p-2">
-          <Command.Empty className="px-3 py-6 text-center text-sm text-faint">
-            No results.
+          <Command.Empty className="px-3 py-6 text-center text-sm text-muted">
+            {t.empty}
           </Command.Empty>
 
-          <Command.Group heading="Navigate" className="px-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wider [&_[cmdk-group-heading]]:text-faint">
+          <Command.Group heading={t.navigate} className={HEADING_CLASS}>
             <Item onSelect={() => run(() => router.push("/#work"))} icon={<Briefcase />}>
-              Selected work
+              {t.work}
             </Item>
             <Item onSelect={() => run(() => router.push("/#about"))} icon={<User />}>
-              About
+              {t.about}
             </Item>
             <Item onSelect={() => run(() => router.push("/#contact"))} icon={<Mail />}>
-              Contact
+              {t.contact}
             </Item>
             <Item
               onSelect={() => run(() => window.dispatchEvent(new Event("eg:open-chat")))}
               icon={<MessageSquare />}
             >
-              Ask the AI assistant
+              {t.askAI}
             </Item>
           </Command.Group>
 
-          <Command.Group heading="Case studies" className="px-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wider [&_[cmdk-group-heading]]:text-faint">
+          <Command.Group heading={t.caseStudies} className={HEADING_CLASS}>
             {publishedProjects.map((p) => (
               <Item
                 key={p.slug}
@@ -99,24 +107,18 @@ export function CommandPalette() {
             ))}
           </Command.Group>
 
-          <Command.Group heading="Links" className="px-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wider [&_[cmdk-group-heading]]:text-faint">
+          <Command.Group heading={t.links} className={HEADING_CLASS}>
             <Item
               onSelect={() => run(() => navigator.clipboard?.writeText(emailAddress))}
               icon={<Mail />}
             >
-              Copy email
+              {t.copyEmail}
             </Item>
             <Item
-              onSelect={() => run(() => window.open(site.socials.github, "_blank"))}
-              icon={<GithubIcon />}
-            >
-              GitHub
-            </Item>
-            <Item
-              onSelect={() => run(() => window.open(site.socials.linkedin, "_blank"))}
+              onSelect={() => run(() => window.open(site.socials.linkedin, "_blank", "noopener,noreferrer"))}
               icon={<LinkedinIcon />}
             >
-              LinkedIn
+              {t.linkedin}
             </Item>
           </Command.Group>
         </Command.List>
@@ -137,7 +139,7 @@ function Item({
   return (
     <Command.Item
       onSelect={onSelect}
-      className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted aria-selected:bg-card-2 aria-selected:text-foreground [&_svg]:h-4 [&_svg]:w-4 [&_svg]:text-faint aria-selected:[&_svg]:text-accent"
+      className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted aria-selected:bg-card-2 aria-selected:text-foreground [&_svg]:h-4 [&_svg]:w-4 [&_svg]:text-muted aria-selected:[&_svg]:text-accent"
     >
       {icon}
       {children}

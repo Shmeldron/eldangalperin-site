@@ -60,6 +60,20 @@ export type Dict = {
   };
   contact: { label: string; intro: string; reveal: string };
   footer: { builtBy: string };
+  notFound: { code: string; title: string; body: string; back: string };
+  cmd: {
+    placeholder: string;
+    empty: string;
+    navigate: string;
+    caseStudies: string;
+    links: string;
+    work: string;
+    about: string;
+    contact: string;
+    askAI: string;
+    copyEmail: string;
+    linkedin: string;
+  };
   caseStudy: {
     back: string;
     roleLabel: string;
@@ -134,6 +148,25 @@ export const DICT: Record<Locale, Dict> = {
       reveal: "click to reveal email",
     },
     footer: { builtBy: "built by eldan galperin" },
+    notFound: {
+      code: "404",
+      title: "Page not found",
+      body: "That page doesn’t exist (or moved). Let’s get you back.",
+      back: "Back home",
+    },
+    cmd: {
+      placeholder: "Type a command or search…",
+      empty: "No results.",
+      navigate: "Navigate",
+      caseStudies: "Case studies",
+      links: "Links",
+      work: "Selected work",
+      about: "About",
+      contact: "Contact",
+      askAI: "Ask the AI assistant",
+      copyEmail: "Copy email",
+      linkedin: "LinkedIn",
+    },
     caseStudy: {
       back: "back to work",
       roleLabel: "role",
@@ -179,7 +212,7 @@ export const DICT: Record<Locale, Dict> = {
       accent: "מקצה לקצה.",
       sub: "מהנדס מוצר פולסטאק שמתכנן, בונה ומשגר אפליקציות ווב, מוצרי AI ואוטומציות — מהקומיט הראשון ועד הפרודקשן.",
       cta1: "לעבודות נבחרות",
-      cta2: "בוא נעבוד יחד",
+      cta2: "בואו נעבוד יחד",
     },
     work: {
       label: "עבודות נבחרות",
@@ -195,7 +228,7 @@ export const DICT: Record<Locale, Dict> = {
       ],
       ctaLead:
         "אני לוקח מספר מצומצם של פרויקטים בעבודה עצמאית וייעוץ, שם אני יכול לעשות את העבודה הכי טובה שלי.",
-      ctaLink: "← בוא נדבר",
+      ctaLink: "בואו נדבר ←",
       stack: [
         { group: "פרונטאנד", items: ["React", "Next.js", "TypeScript", "Tailwind", "Framer Motion"] },
         { group: "בקאנד", items: ["Node.js", "PostgreSQL", "Supabase", "Edge Functions", "REST"] },
@@ -204,12 +237,31 @@ export const DICT: Record<Locale, Dict> = {
       ],
     },
     contact: {
-      label: "בוא נעבוד יחד",
+      label: "בואו נעבוד יחד",
       intro:
         "יש לכם מוצר לבנות או יכולת AI לשגר? אני פנוי למספר מצומצם של פרויקטים בעבודה עצמאית וייעוץ.",
       reveal: "לחצו לחשיפת האימייל",
     },
     footer: { builtBy: "נבנה על ידי אלדן גלפרין" },
+    notFound: {
+      code: "404",
+      title: "הדף לא נמצא",
+      body: "הדף הזה לא קיים (או שעבר למקום אחר). בואו נחזיר אתכם הביתה.",
+      back: "חזרה לדף הבית",
+    },
+    cmd: {
+      placeholder: "הקלידו פקודה או חיפוש…",
+      empty: "אין תוצאות.",
+      navigate: "ניווט",
+      caseStudies: "תיאורי מקרה",
+      links: "קישורים",
+      work: "עבודות נבחרות",
+      about: "אודות",
+      contact: "יצירת קשר",
+      askAI: "שאלו את העוזר החכם",
+      copyEmail: "העתקת אימייל",
+      linkedin: "LinkedIn",
+    },
     caseStudy: {
       back: "חזרה לעבודות",
       roleLabel: "תפקיד",
@@ -307,4 +359,4 @@ export const HE_CASE: Record<
 };
 
 /** Latin-script detection — true when a stack item should NOT be wrapped LTR. */
-export const isHebrew = (s: string) => /^[֐-׿]/.test(s);
+export const isHebrew = (s: string) => /^[\u0590-\u05FF]/.test(s);

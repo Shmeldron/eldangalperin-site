@@ -46,7 +46,7 @@ export function MagneticButton({
     "group relative inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium tracking-tight transition-colors";
   const styles =
     variant === "primary"
-      ? "bg-accent text-[#04130c] hover:bg-[#4ade9f] shadow-[0_0_30px_-6px] shadow-accent/50"
+      ? "bg-accent text-on-accent hover:bg-accent-hover shadow-[0_0_30px_-6px] shadow-accent/50"
       : "border border-border-strong text-foreground hover:border-accent/60 hover:text-accent";
 
   return (

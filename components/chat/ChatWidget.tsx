@@ -27,6 +27,8 @@ export function ChatWidget() {
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const launcherRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const [leadFormOpen, setLeadFormOpen] = useState(false);
   const [leadEmail, setLeadEmail] = useState("");
   const [leadNote, setLeadNote] = useState("");
@@ -61,7 +63,39 @@ export function ChatWidget() {
     if (open) {
       track("chat_opened");
       setTimeout(() => inputRef.current?.focus(), 120);
+    } else {
+      // Return focus to the launcher when the dialog closes.
+      launcherRef.current?.focus();
     }
+  }, [open]);
+
+  // Dialog behaviour while open: Esc closes, and Tab is trapped within the panel.
+  useEffect(() => {
+    if (!open) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab" || !panelRef.current) return;
+      const focusable = panelRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
   async function send(text: string) {
@@ -141,12 +175,15 @@ export function ChatWidget() {
       {/* Launcher — wrapper handles the fixed anchor + slide; button handles hover */}
       <motion.div animate={launcher} className="fixed bottom-5 end-5 z-40">
         <motion.button
+          ref={launcherRef}
           type="button"
           onClick={() => setOpen((o) => !o)}
           aria-label={t.openAria}
+          aria-haspopup="dialog"
+          aria-expanded={open}
           whileHover={reduce ? undefined : { scale: 1.05 }}
           whileTap={reduce ? undefined : { scale: 0.95 }}
-          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent text-[#04130c] shadow-[0_0_40px_-8px] shadow-accent/60"
+          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent text-on-accent shadow-[0_0_40px_-8px] shadow-accent/60"
         >
           <AnimatePresence mode="wait" initial={false}>
             {open ? (
@@ -166,7 +203,11 @@ export function ChatWidget() {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={panelRef}
             dir={dir}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t.headerTitle}
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.96 }}
@@ -180,14 +221,14 @@ export function ChatWidget() {
               </span>
               <div className="leading-tight">
                 <p className="text-sm font-medium">{t.headerTitle}</p>
-                <p className="font-mono text-[10px] text-faint">{t.headerSub}</p>
+                <p className="font-mono text-[10px] text-muted">{t.headerSub}</p>
               </div>
             </div>
 
             {/* messages */}
             <div ref={scrollRef} aria-live="polite" className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
               {/* greeting (presentational, follows the toggle) */}
-              <div dir="auto" className="me-auto max-w-[85%] rounded-2xl rounded-bl-sm bg-card-2 px-3.5 py-2 text-sm text-muted">
+              <div dir="auto" className="me-auto max-w-[85%] rounded-2xl rounded-es-sm bg-card-2 px-3.5 py-2 text-sm text-foreground">
                 {t.greeting}
               </div>
 
@@ -197,8 +238,8 @@ export function ChatWidget() {
                   dir="auto"
                   className={
                     m.role === "user"
-                      ? "ms-auto max-w-[85%] rounded-2xl rounded-br-sm bg-accent/15 px-3.5 py-2 text-sm text-foreground"
-                      : "me-auto max-w-[85%] rounded-2xl rounded-bl-sm bg-card-2 px-3.5 py-2 text-sm text-muted"
+                      ? "ms-auto max-w-[85%] rounded-2xl rounded-ee-sm bg-accent/15 px-3.5 py-2 text-sm text-foreground"
+                      : "me-auto max-w-[85%] rounded-2xl rounded-es-sm bg-card-2 px-3.5 py-2 text-sm text-foreground"
                   }
                 >
                   {m.content || (busy && i === messages.length - 1 ? <TypingDots /> : "")}
@@ -225,7 +266,7 @@ export function ChatWidget() {
                     <button
                       type="button"
                       onClick={() => setLeadFormOpen(true)}
-                      className="inline-flex items-center gap-1.5 text-xs text-faint transition-colors hover:text-accent"
+                      className="inline-flex items-center gap-1.5 text-xs text-muted transition-colors hover:text-accent"
                     >
                       <Mail className="h-3.5 w-3.5" />
                       {t.shareEmail}
@@ -242,39 +283,39 @@ export function ChatWidget() {
                         onChange={(e) => setLeadEmail(e.target.value)}
                         maxLength={120}
                         placeholder="you@company.com"
-                        className="w-full rounded-lg bg-card px-2.5 py-1.5 text-sm text-foreground outline-none placeholder:text-faint"
+                        className="w-full rounded-lg bg-card px-2.5 py-1.5 text-sm text-foreground outline-none placeholder:text-muted"
                       />
                       <input
                         value={leadNote}
                         onChange={(e) => setLeadNote(e.target.value)}
                         maxLength={600}
                         placeholder={t.notePlaceholder}
-                        className="w-full rounded-lg bg-card px-2.5 py-1.5 text-sm text-foreground outline-none placeholder:text-faint"
+                        className="w-full rounded-lg bg-card px-2.5 py-1.5 text-sm text-foreground outline-none placeholder:text-muted"
                       />
                       <div className="flex items-center gap-2">
                         <button
                           type="submit"
                           disabled={leadStatus === "sending" || !leadEmail.trim()}
-                          className="rounded-full bg-accent px-3 py-1.5 text-xs font-medium text-[#04130c] transition-opacity disabled:opacity-40"
+                          className="rounded-full bg-accent px-3 py-1.5 text-xs font-medium text-on-accent transition-opacity disabled:opacity-40"
                         >
                           {leadStatus === "sending" ? t.sending : t.send}
                         </button>
                         <button
                           type="button"
                           onClick={() => setLeadFormOpen(false)}
-                          className="text-xs text-faint hover:text-foreground"
+                          className="text-xs text-muted hover:text-foreground"
                         >
                           {t.cancel}
                         </button>
                       </div>
                       {leadStatus === "error" && (
-                        <p className="text-xs text-red-400">{t.errorSend}</p>
+                        <p className="text-xs text-danger">{t.errorSend}</p>
                       )}
                     </form>
                   )}
 
                   {leadStatus === "offline" && (
-                    <p className="text-xs text-faint">{t.offline}</p>
+                    <p className="text-xs text-muted">{t.offline}</p>
                   )}
                 </div>
               )}
@@ -299,13 +340,13 @@ export function ChatWidget() {
                 maxLength={800}
                 aria-label={t.placeholder}
                 placeholder={t.placeholder}
-                className="flex-1 bg-transparent px-2 text-sm text-foreground outline-none placeholder:text-faint"
+                className="flex-1 bg-transparent px-2 text-sm text-foreground outline-none placeholder:text-muted"
               />
               <button
                 type="submit"
                 disabled={busy || !input.trim()}
                 aria-label={t.sendAria}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-accent text-[#04130c] transition-opacity disabled:opacity-40"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-accent text-on-accent transition-opacity disabled:opacity-40"
               >
                 <Send className="h-4 w-4" />
               </button>
@@ -323,7 +364,7 @@ function TypingDots() {
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="h-1.5 w-1.5 animate-bounce rounded-full bg-faint"
+          className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted"
           style={{ animationDelay: `${i * 0.15}s` }}
         />
       ))}

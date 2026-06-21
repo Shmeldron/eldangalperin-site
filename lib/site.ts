@@ -17,7 +17,9 @@ export const site = {
   // Split for the email obfuscation reveal (never rendered as one string).
   email: { user: "eldangalperin", domain: "gmail.com" },
   socials: {
-    github: "https://github.com/Shmeldron",
+    // GitHub hidden for now while the profile is being cleaned up — re-add the
+    // line below (and the rendered links / command-palette item) to restore it.
+    // github: "https://github.com/Shmeldron",
     linkedin: "https://www.linkedin.com/in/eldan-galperin",
   },
 } as const;

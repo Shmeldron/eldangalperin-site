@@ -15,6 +15,9 @@
   --faint: #5c6178;
   --accent: #34d399; /* emerald */
   --accent-2: #22d3ee; /* cyan */
+  --accent-hover: #4ade9f; /* lighter emerald — primary button hover */
+  --on-accent: #04130c; /* near-black text on accent fills (≈9:1) */
+  --danger: #f87171; /* error text */
 }
 
 @theme inline {
@@ -28,6 +31,9 @@
   --color-faint: var(--faint);
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
+  --color-accent-hover: var(--accent-hover);
+  --color-on-accent: var(--on-accent);
+  --color-danger: var(--danger);
 
   --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;

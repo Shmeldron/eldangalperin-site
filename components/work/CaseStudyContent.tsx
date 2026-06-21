@@ -76,7 +76,7 @@ export function CaseStudyContent({
             {tagline}
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3 font-mono text-xs text-faint">
+          <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3 font-mono text-xs text-muted">
             <span>
               <span className="text-muted">{ui.roleLabel}</span> ·{" "}
               {isHebrew(role) ? role : <Ltr>{role}</Ltr>}
@@ -169,7 +169,7 @@ export function CaseStudyContent({
         <div className="mt-20 flex flex-col items-start justify-between gap-6 border-t border-border pt-10 sm:flex-row sm:items-center">
           {nextProject && (
             <Link href={`/work/${nextProject.slug}`} className="group">
-              <span className="font-mono text-xs text-faint">{ui.nextProject}</span>
+              <span className="font-mono text-xs text-muted">{ui.nextProject}</span>
               <span className="mt-1 flex items-center gap-2 text-lg font-semibold tracking-tight transition-colors group-hover:text-accent">
                 <Ltr>{nextProject.title}</Ltr>
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
@@ -186,7 +186,7 @@ export function CaseStudyContent({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <Reveal as="section">
-      <h2 className="font-mono text-xs uppercase tracking-wider text-faint">{title}</h2>
+      <h2 className="font-mono text-xs uppercase tracking-wider text-muted">{title}</h2>
       <div className="mt-3">{children}</div>
     </Reveal>
   );

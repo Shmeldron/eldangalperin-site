@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { DIR, OTHER, LOCALE_COOKIE, type Locale } from "@/lib/i18n/content";
 
 type Ctx = { locale: Locale; toggle: () => void; setLocale: (l: Locale) => void };
@@ -25,13 +25,17 @@ export function LocaleProvider({
     const el = document.documentElement;
     el.lang = locale;
     el.dir = DIR[locale];
-    document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax`;
+    const secure = location.protocol === "https:" ? "; secure" : "";
+    document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax${secure}`;
   }, [locale]);
 
   const toggle = useCallback(() => setLocale((l) => OTHER[l]), []);
 
+  // Memoised so consumers (Header, Footer, …) don't re-render on every render.
+  const value = useMemo(() => ({ locale, toggle, setLocale }), [locale, toggle]);
+
   return (
-    <LocaleContext.Provider value={{ locale, toggle, setLocale }}>
+    <LocaleContext.Provider value={value}>
       {children}
     </LocaleContext.Provider>
   );

@@ -13,8 +13,8 @@ export function Footer() {
   return (
     <footer className="border-t border-border">
       <div className="mx-auto flex w-full max-w-6xl flex-col items-start justify-between gap-6 px-6 py-10 sm:flex-row sm:items-center sm:px-10">
-        <div className="text-xs text-faint">
-          <p className="text-muted">
+        <div className="text-xs text-muted">
+          <p>
             <span dir="ltr" className="font-mono text-accent">$</span> {t.footer.builtBy}
           </p>
           <p className="mt-1">
@@ -34,7 +34,7 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="text-muted hover:text-accent"
+            className="-m-2 inline-flex h-11 w-11 items-center justify-center p-2 text-muted hover:text-accent"
           >
             <LinkedinIcon className="h-4 w-4" />
           </a>

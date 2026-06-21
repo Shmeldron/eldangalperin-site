@@ -15,7 +15,10 @@ export function TerminalMotif({
   className?: string;
 }) {
   return (
+    // Self-isolating LTR: terminal lines ($, →, #) must never bidi-reorder when
+    // rendered inside an RTL (Hebrew) page — so callers don't have to remember.
     <div
+      dir="ltr"
       className={cn(
         "overflow-hidden rounded-xl border border-border bg-card-2 shadow-2xl shadow-black/40",
         className
@@ -25,7 +28,7 @@ export function TerminalMotif({
         <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]/70" />
         <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]/70" />
         <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]/70" />
-        <span className="ms-3 font-mono text-[11px] text-faint">{title}</span>
+        <span className="ms-3 font-mono text-[11px] text-muted">{title}</span>
       </div>
       <div className="relative aspect-[16/10] overflow-hidden p-4 font-mono text-[12px] leading-relaxed sm:p-5 sm:text-[13px]">
         {lines.map((line, i) => (

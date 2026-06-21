@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import { getProject, projects, publishedProjects } from "@/lib/projects";
 import { site } from "@/lib/site";
+import { HE_PROJECT, LOCALE_COOKIE, type Locale } from "@/lib/i18n/content";
 import { CaseStudyContent } from "@/components/work/CaseStudyContent";
 
 export function generateStaticParams() {
@@ -16,13 +18,23 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
+
+  const cookieStore = await cookies();
+  const locale: Locale = cookieStore.get(LOCALE_COOKIE)?.value === "he" ? "he" : "en";
+  const he = locale === "he" ? HE_PROJECT[project.slug] : undefined;
+  const kicker = he?.kicker ?? project.kicker;
+  const tagline = he?.tagline ?? project.tagline;
+
   return {
-    title: `${project.title} — ${project.kicker}`,
-    description: project.tagline,
+    title: `${project.title} — ${kicker}`,
+    description: tagline,
+    alternates: { canonical: `${site.url}/work/${project.slug}` },
     openGraph: {
-      title: `${project.title} — ${project.kicker}`,
-      description: project.tagline,
+      title: `${project.title} — ${kicker}`,
+      description: tagline,
       url: `${site.url}/work/${project.slug}`,
+      locale: locale === "he" ? "he_IL" : "en_US",
+      alternateLocale: locale === "he" ? "en_US" : "he_IL",
     },
   };
 }

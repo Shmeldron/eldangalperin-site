@@ -104,7 +104,7 @@ export function HeProjectCard({
           ))}
         </div>
 
-        <p className="mt-4 text-xs text-faint">{he.role}</p>
+        <p className="mt-4 text-xs text-muted">{he.role}</p>
       </motion.article>
     </Link>
   );

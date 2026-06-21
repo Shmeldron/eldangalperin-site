@@ -64,6 +64,8 @@ export const projects: Project[] = [
       "TypeScript",
       "Supabase",
       "PostgreSQL / RLS",
+      "MongoDB",
+      "MySQL",
       "Edge Functions",
       "Node.js / Express",
       "OpenAI",

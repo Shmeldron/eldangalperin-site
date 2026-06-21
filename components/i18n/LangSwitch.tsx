@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 
 /**
@@ -10,6 +10,7 @@ import { useLocale } from "@/lib/i18n/LocaleProvider";
  */
 export function LangSwitch() {
   const { locale, toggle } = useLocale();
+  const reduce = useReducedMotion();
   return (
     <div className="fixed left-1/2 top-4 z-[60] -translate-x-1/2 sm:top-5">
       <button
@@ -25,12 +26,12 @@ export function LangSwitch() {
           aria-hidden
           className="absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-full bg-accent"
           animate={{ x: locale === "en" ? "0%" : "100%" }}
-          transition={{ type: "spring", stiffness: 420, damping: 34 }}
+          transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 34 }}
         />
-        <span className={`relative z-10 px-4 py-1.5 ${locale === "en" ? "text-[#04130c]" : "text-muted"}`}>
+        <span className={`relative z-10 px-4 py-1.5 ${locale === "en" ? "text-on-accent" : "text-muted"}`}>
           EN
         </span>
-        <span className={`relative z-10 px-4 py-1.5 ${locale === "he" ? "text-[#04130c]" : "text-muted"}`}>
+        <span className={`relative z-10 px-4 py-1.5 ${locale === "he" ? "text-on-accent" : "text-muted"}`}>
           עב
         </span>
       </button>
