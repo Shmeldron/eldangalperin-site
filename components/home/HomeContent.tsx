@@ -322,7 +322,12 @@ function Work({ locale, t }: { locale: Locale; t: T }) {
           const copy =
             locale === "he"
               ? HE_PROJECT[project.slug]
-              : { kicker: project.kicker, tagline: project.tagline, role: project.role };
+              : {
+                  kicker: project.kicker,
+                  tagline: project.tagline,
+                  role: project.role,
+                  highlights: project.highlights,
+                };
           if (!copy) return null;
           return <HeProjectCard key={project.slug} project={project} he={copy} index={i} />;
         })}
@@ -383,45 +388,62 @@ function Contact({ t }: { t: T }) {
     <section id="contact" className="relative mx-auto w-full max-w-6xl scroll-mt-24 px-6 py-24 sm:px-10">
       <SectionLabel index="03" title={t.contact.label} />
       <p className="mt-4 max-w-xl text-balance text-lg leading-relaxed text-muted">{t.contact.intro}</p>
-      <EmailReveal reveal={t.contact.reveal} />
+      <EmailReveal reveal={t.contact.reveal} copyLabel={t.cmd.copyEmail} />
     </section>
   );
 }
 
-function EmailReveal({ reveal }: { reveal: string }) {
+function EmailReveal({ reveal, copyLabel }: { reveal: string; copyLabel: string }) {
   const [revealed, setRevealed] = useState(false);
   const [copied, setCopied] = useState(false);
   const address = `${site.email.user}@${site.email.domain}`;
 
-  async function handleClick() {
-    setRevealed(true);
+  async function copy() {
     try {
       await navigator.clipboard.writeText(address);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      /* clipboard blocked — still revealed */
+      /* clipboard blocked — the mailto link still works */
     }
   }
 
   return (
     <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-      <button
-        type="button"
-        onClick={handleClick}
-        className="group inline-flex items-center gap-3 rounded-full border border-border-strong bg-card px-5 py-3 text-sm transition-colors hover:border-accent/60"
-      >
-        <Mail className="h-4 w-4 text-accent" />
-        <span dir="ltr" style={{ unicodeBidi: "isolate" }} className={revealed ? "text-foreground" : "text-muted"}>
-          {revealed ? address : reveal}
-        </span>
-        {revealed &&
-          (copied ? (
-            <Check className="h-4 w-4 text-accent" />
-          ) : (
-            <Copy className="h-4 w-4 text-faint transition-colors group-hover:text-foreground" />
-          ))}
-      </button>
+      {!revealed ? (
+        <button
+          type="button"
+          onClick={() => setRevealed(true)}
+          className="group inline-flex items-center gap-3 rounded-full border border-border-strong bg-card px-5 py-3 text-sm transition-colors hover:border-accent/60"
+        >
+          <Mail className="h-4 w-4 text-accent" />
+          <span className="text-muted transition-colors group-hover:text-foreground">{reveal}</span>
+        </button>
+      ) : (
+        <div className="inline-flex items-center gap-3 rounded-full border border-border-strong bg-card px-5 py-3 text-sm">
+          <Mail className="h-4 w-4 shrink-0 text-accent" />
+          <a
+            href={`mailto:${address}`}
+            dir="ltr"
+            style={{ unicodeBidi: "isolate" }}
+            className="text-foreground underline-offset-4 hover:text-accent hover:underline"
+          >
+            {address}
+          </a>
+          <button
+            type="button"
+            onClick={copy}
+            aria-label={copyLabel}
+            className="group/copy inline-flex shrink-0"
+          >
+            {copied ? (
+              <Check className="h-4 w-4 text-accent" />
+            ) : (
+              <Copy className="h-4 w-4 text-faint transition-colors group-hover/copy:text-foreground" />
+            )}
+          </button>
+        </div>
+      )}
 
       <a
         href={site.socials.linkedin}

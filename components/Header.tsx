@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Command } from "lucide-react";
+import { Command, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { openCommandPalette } from "@/components/CommandPalette";
 import { DICT } from "@/lib/i18n/content";
@@ -66,10 +66,13 @@ export function Header() {
           <button
             type="button"
             onClick={openCommandPalette}
-            className="ms-1 inline-flex items-center gap-2 rounded-full border border-border-strong bg-card px-3 py-1.5 font-mono text-xs text-muted transition-colors hover:border-accent/50 hover:text-foreground"
+            className="ms-1 inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border-strong bg-card px-3 font-mono text-xs text-muted transition-colors hover:border-accent/50 hover:text-foreground sm:h-auto sm:py-1.5"
             aria-label="Open command palette"
           >
-            <Command className="h-3.5 w-3.5" />
+            {/* Mobile reads a search glyph as "tap to search"; the ⌘ symbol is
+                meaningless on a phone with no Command key. Desktop keeps ⌘K. */}
+            <Search className="h-4 w-4 sm:hidden" />
+            <Command className="hidden h-3.5 w-3.5 sm:inline" />
             <span className="hidden sm:inline">K</span>
           </button>
         </div>

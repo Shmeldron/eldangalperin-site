@@ -26,6 +26,8 @@ export type Project = {
   tagline: string;
   year: string;
   role: string;
+  /** Up to ~2 short proof points shown on the card — value + label. */
+  highlights?: { value: string; label: string }[];
   /**
    * "ui" projects render screenshots in device frames; "service" projects
    * (bots, backends, agents — no UI) render a terminal motif instead.
@@ -54,6 +56,10 @@ export const projects: Project[] = [
       "A live, AI-driven wellness app — owned end to end, from the member experience to Tovi, the in-app AI coach, to the platform behind it.",
     year: "2025–26",
     role: "Founding / lead full-stack engineer",
+    highlights: [
+      { value: "iOS + Android", label: "live in production" },
+      { value: "24/7", label: "in-app AI coach" },
+    ],
     links: [
       { label: "App Store", href: "https://apps.apple.com/us/app/stayyoung/id6759099350" },
       { label: "Google Play", href: "https://play.google.com/store/apps/details?id=stayyoung.app.lovable" },
@@ -103,6 +109,10 @@ export const projects: Project[] = [
       "The internal platform that runs the business — sales funnels, subscription billing, AI agents, finance, and bookings, in one Next.js app.",
     year: "2025–26",
     role: "Solo build",
+    highlights: [
+      { value: "5,000+", label: "customers" },
+      { value: "11", label: "sales funnels" },
+    ],
     stack: [
       "Next.js 16",
       "React 19",
@@ -142,6 +152,10 @@ export const projects: Project[] = [
     year: "2025",
     role: "Solo build",
     kind: "service",
+    highlights: [
+      { value: "Voice → action", label: "WhatsApp-native" },
+      { value: "MCP", label: "real tool-use" },
+    ],
     terminal: [
       "$ node whatsapp-assistant",
       "✓ whatsapp session connected",
@@ -174,6 +188,10 @@ export const projects: Project[] = [
     year: "2026",
     role: "Solo build",
     kind: "service",
+    highlights: [
+      { value: "Multi-agent", label: "orchestrated" },
+      { value: "TDD", label: "contract-tested" },
+    ],
     terminal: [
       "$ uv run bot-bench",
       "✓ merlin orchestrator online",

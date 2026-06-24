@@ -7,9 +7,15 @@ import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/lib/projects";
 import { DeviceFrame } from "@/components/DeviceFrame";
 import { TerminalMotif } from "@/components/TerminalMotif";
+import { isHebrew } from "@/lib/i18n/content";
 
 /** Hebrew copy overlaid on a real project (keeps its terminal/screenshots/stack). */
-export type HeCopy = { kicker: string; tagline: string; role: string };
+export type HeCopy = {
+  kicker: string;
+  tagline: string;
+  role: string;
+  highlights?: { value: string; label: string }[];
+};
 
 /**
  * Project card. Links to the case study; mirrors the English original — 3D tilt,
@@ -91,6 +97,25 @@ export function HeProjectCard({
         </div>
 
         <p className="mt-3 text-sm leading-relaxed text-muted">{he.tagline}</p>
+
+        {he.highlights && he.highlights.length > 0 && (
+          <div className="mt-5 flex flex-wrap gap-x-7 gap-y-2 border-t border-border pt-4">
+            {he.highlights.map((h) => (
+              <div key={h.label}>
+                <div className="text-base font-semibold leading-tight tracking-tight text-foreground">
+                  {isHebrew(h.value) ? (
+                    h.value
+                  ) : (
+                    <span dir="ltr" style={{ unicodeBidi: "isolate" }}>
+                      {h.value}
+                    </span>
+                  )}
+                </div>
+                <div className="mt-0.5 text-[11px] text-faint">{h.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className="mt-5 flex flex-wrap gap-1.5">
           {project.stack.slice(0, 4).map((t) => (

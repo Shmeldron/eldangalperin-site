@@ -226,7 +226,7 @@ export function ChatWidget() {
             </div>
 
             {/* messages */}
-            <div ref={scrollRef} aria-live="polite" className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+            <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
               {/* greeting (presentational, follows the toggle) */}
               <div dir="auto" className="me-auto max-w-[85%] rounded-2xl rounded-es-sm bg-card-2 px-3.5 py-2 text-sm text-foreground">
                 {t.greeting}
@@ -323,6 +323,16 @@ export function ChatWidget() {
               {leadStatus === "sent" && (
                 <p className="pt-1 text-xs text-accent">{t.sent}</p>
               )}
+            </div>
+
+            {/* Announce each assistant reply once it finishes — not on every
+                stream chunk (which read as stutter when on the scroll container). */}
+            <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+              {!busy &&
+              messages.length > 0 &&
+              messages[messages.length - 1].role === "assistant"
+                ? messages[messages.length - 1].content
+                : ""}
             </div>
 
             {/* input */}

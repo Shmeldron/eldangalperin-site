@@ -1,6 +1,10 @@
 "use client";
 
 import { Command } from "cmdk";
+// cmdk renders these children inside its internal Radix Dialog.Content, so a
+// sr-only Title + Description satisfy Radix's a11y requirements (clears the
+// dev-only "DialogContent requires a DialogTitle" console error).
+import { Title as DialogTitle, Description as DialogDescription } from "@radix-ui/react-dialog";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -68,6 +72,8 @@ export function CommandPalette() {
         className="fixed inset-0 bg-black/60 backdrop-blur-sm"
       />
       <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-border-strong bg-card shadow-2xl shadow-black/60">
+        <DialogTitle className="sr-only">{locale === "he" ? "חלונית פקודות" : "Command palette"}</DialogTitle>
+        <DialogDescription className="sr-only">{t.placeholder}</DialogDescription>
         <Command.Input
           placeholder={t.placeholder}
           className="w-full border-b border-border bg-transparent px-5 py-4 text-sm text-foreground outline-none placeholder:text-muted"

@@ -12,7 +12,7 @@
   --border-strong: #2a2e42;
   --foreground: #e7e9f0;
   --muted: #9aa0b4;
-  --faint: #5c6178;
+  --faint: #797f9c; /* ≥4.5:1 on bg + card (AA for small text) */
   --accent: #34d399; /* emerald */
   --accent-2: #22d3ee; /* cyan */
   --accent-hover: #4ade9f; /* lighter emerald — primary button hover */

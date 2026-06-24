@@ -14,7 +14,13 @@ export const OTHER: Record<Locale, Locale> = { en: "he", he: "en" };
 // module into a Server Component yields a client reference, not the value.
 export const LOCALE_COOKIE = "locale";
 
-export type ProjectCopy = { kicker: string; tagline: string; role: string };
+export type ProjectCopy = {
+  kicker: string;
+  tagline: string;
+  role: string;
+  /** Hebrew proof points shown on the card — value + label (mirrors projects.ts). */
+  highlights?: { value: string; label: string }[];
+};
 
 /** Hebrew project copy, by slug. English equivalents come from lib/projects.ts. */
 export const HE_PROJECT: Record<string, ProjectCopy> = {
@@ -23,23 +29,39 @@ export const HE_PROJECT: Record<string, ProjectCopy> = {
     role: "מהנדס פולסטאק מייסד ומוביל",
     tagline:
       "אפליקציית רווחה חיה מבוססת AI — בנייה מקצה לקצה: מחוויית המשתמש, דרך טובי (מאמן ה‑AI שבתוך האפליקציה), ועד הפלטפורמה שמאחורי הקלעים.",
+    highlights: [
+      { value: "iOS + Android", label: "חי בפרודקשן" },
+      { value: "24/7", label: "מאמן AI באפליקציה" },
+    ],
   },
   "stayyoung-platform": {
     kicker: "מרכז עסקי וצמיחה",
     role: "בנייה עצמאית",
     tagline:
       "הפלטפורמה הפנימית שמריצה את העסק — משפכי מכירה, מנויים וחיובים, סוכני AI, פיננסים והזמנות, באפליקציית Next.js אחת.",
+    highlights: [
+      { value: "5,000+", label: "לקוחות" },
+      { value: "11", label: "משפכי מכירה" },
+    ],
   },
   "whatsapp-assistant": {
     kicker: "סוכן LLM על וואטסאפ",
     role: "בנייה עצמאית",
     tagline: "עוזר אישי שחי בתוך וואטסאפ — הודעה קולית נכנסת, פעולה אמיתית יוצאת.",
+    highlights: [
+      { value: "קול ← פעולה", label: "נייטיב בוואטסאפ" },
+      { value: "MCP", label: "שימוש אמיתי בכלים" },
+    ],
   },
   "spaceship-simulator-jarvis": {
     kicker: "סימולציה מרובת‑סוכנים",
     role: "בנייה עצמאית",
     tagline:
       "סימולטור תפעול חללית מרובה‑סוכנים: אורקסטרטור וסוכני ship‑AI שמתאמים ביניהם דרך פרוטוקול אדפטרים נקי.",
+    highlights: [
+      { value: "מרובה‑סוכנים", label: "מתואם" },
+      { value: "TDD", label: "מבוסס contract‑tests" },
+    ],
   },
 };
 
