@@ -11,7 +11,7 @@ export function LangToggle() {
       type="button"
       onClick={toggle}
       aria-label={`Switch language to ${DICT[locale].toggleLabel}`}
-      className="inline-flex h-7 items-center rounded-md px-2 font-mono text-xs text-faint transition-colors hover:text-muted active:scale-95"
+      className="inline-flex h-7 items-center rounded-md px-2 font-mono text-xs text-muted transition-colors hover:text-foreground active:scale-95"
     >
       {DICT[locale].toggleLabel}
     </button>

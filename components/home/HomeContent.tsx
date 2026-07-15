@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { publishedProjects } from "@/lib/projects";
 import { DICT, HE_PROJECT } from "@/lib/i18n/content";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
@@ -14,17 +14,18 @@ export function HomeContent() {
   const t = DICT[locale].home;
   const featured = publishedProjects.filter((p) => p.featured);
   const services = publishedProjects.filter((p) => p.kind === "service");
+  const shouldReduce = useReducedMotion();
 
   return (
     <div className="mx-auto w-full max-w-[600px] px-4 pb-24">
       {/* Intro — the "who I am + what I can do", in plain prose. */}
       <motion.section
-        initial={{ opacity: 0, y: 6 }}
+        initial={shouldReduce ? false : { opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="mt-8 flex flex-col gap-2 text-[15px] leading-relaxed text-foreground"
       >
-        <p>{t.greeting}</p>
+        <h1 className="font-normal">{t.greeting}</h1>
         <p>
           {t.intro2pre}
           <Link href="/work/stayyoung" dir="ltr" className="link-sweep">{t.intro2sy}</Link>
@@ -43,7 +44,7 @@ export function HomeContent() {
 
       {/* Projects — featured, as cards. */}
       <section id="work" className="mt-10 scroll-mt-20">
-        <p className="text-[15px] text-muted">{t.projectsLabel}</p>
+        <h2 className="text-[15px] font-normal text-muted">{t.projectsLabel}</h2>
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {featured.map((p) => <ProjectCard key={p.slug} project={p} />)}
         </div>
@@ -52,7 +53,7 @@ export function HomeContent() {
       {/* More — service projects, as a spotlight-hover list. */}
       {services.length > 0 && (
         <section id="more" className="mt-10 scroll-mt-20">
-          <p className="text-[15px] text-muted">{t.moreLabel}</p>
+          <h2 className="text-[15px] font-normal text-muted">{t.moreLabel}</h2>
           <div className="spotlight mt-4">
             {services.map((p) => {
               const he = HE_PROJECT[p.slug];
@@ -74,7 +75,7 @@ export function HomeContent() {
 
       {/* Elsewhere — contact + links. */}
       <section id="contact" className="mt-16 scroll-mt-20">
-        <p className="text-[15px] text-muted">{t.elsewhereLabel}</p>
+        <h2 className="text-[15px] font-normal text-muted">{t.elsewhereLabel}</h2>
         <p className="mt-1 text-[15px] text-foreground">{t.elsewhereSub}</p>
         <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
           <EmailReveal />
