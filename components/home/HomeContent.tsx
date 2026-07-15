@@ -12,6 +12,9 @@ import { EmailReveal } from "@/components/home/EmailReveal";
 export function HomeContent() {
   const { locale } = useLocale();
   const t = DICT[locale].home;
+  // Render contract: the home page shows `featured` projects as cards and
+  // `kind: "service"` projects in the "More" list. A published project that is
+  // NEITHER would render nowhere — mark any new project as one or the other.
   const featured = publishedProjects.filter((p) => p.featured);
   const services = publishedProjects.filter((p) => p.kind === "service");
   const shouldReduce = useReducedMotion();

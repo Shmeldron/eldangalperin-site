@@ -65,22 +65,8 @@ export const HE_PROJECT: Record<string, ProjectCopy> = {
   },
 };
 
-type StackCol = { group: string; items: string[] };
-
 export type Dict = {
-  nav: { work: string; about: string; contact: string };
   toggleLabel: string; // label on the toggle = the OTHER language
-  status: string[];
-  hero: { line1: string; accent: string; sub: string; cta1: string; cta2: string };
-  work: { label: string; intro: string };
-  about: {
-    label: string;
-    paras: string[];
-    ctaLead: string;
-    ctaLink: string;
-    stack: StackCol[];
-  };
-  contact: { label: string; intro: string; reveal: string };
   home: {
     greeting: string;
     intro2pre: string; intro2sy: string; intro2mid: string;
@@ -90,30 +76,14 @@ export type Dict = {
     projectsLabel: string; moreLabel: string;
     elsewhereLabel: string; elsewhereSub: string; emailLabel: string;
   };
-  footer: { builtBy: string };
   notFound: { code: string; title: string; body: string; back: string };
-  cmd: {
-    placeholder: string;
-    empty: string;
-    navigate: string;
-    caseStudies: string;
-    links: string;
-    work: string;
-    about: string;
-    contact: string;
-    askAI: string;
-    copyEmail: string;
-    linkedin: string;
-  };
   caseStudy: {
     back: string;
-    roleLabel: string;
     problem: string;
     built: string;
     impact: string;
     stack: string;
     nextProject: string;
-    startProject: string;
   };
   chat: {
     greeting: string;
@@ -136,48 +106,7 @@ export type Dict = {
 
 export const DICT: Record<Locale, Dict> = {
   en: {
-    nav: { work: "Work", about: "About", contact: "Contact" },
     toggleLabel: "עברית",
-    status: [
-      "available for select freelance & consulting work",
-      "shipping AI products with next.js + claude",
-      "from first commit to production",
-    ],
-    hero: {
-      line1: "I build digital products",
-      accent: "end to end.",
-      sub: "A full-stack product engineer who designs, builds, and ships web apps, AI products, and automations — from the first commit to production.",
-      cta1: "View selected work",
-      cta2: "Let’s work together",
-    },
-    work: {
-      label: "Selected work",
-      intro:
-        "A few products I’ve taken from idea to production. Fewer, deeper case studies — the work is the proof.",
-    },
-    about: {
-      label: "About",
-      paras: [
-        "I’m Eldan Galperin, a full-stack product engineer. I like owning a product from the messy first idea all the way to something real people use — the data model, the API, the interface, and increasingly the AI that sits inside it.",
-        "Before going independent, I spent four years at Body Vision Medical — a medical-AI and computer-vision startup — where I went from leading QA to engineering its real-time lung-navigation software.",
-        "Lately that’s meant building AI-powered products: an in-app assistant on Claude, multi-tenant content pipelines, and agents that take real actions. I care about the unglamorous parts too — auth, performance, security, and making things fast on a mid-range phone.",
-      ],
-      ctaLead:
-        "I take on a small number of freelance and consulting engagements where I can do my best work.",
-      ctaLink: "Let’s talk →",
-      stack: [
-        { group: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind", "Framer Motion"] },
-        { group: "Backend", items: ["Node.js", "PostgreSQL", "Supabase", "Edge Functions", "REST"] },
-        { group: "AI / LLM", items: ["Anthropic Claude", "OpenAI", "Function calling", "RAG", "Prompt design"] },
-        { group: "Ship", items: ["Vercel", "CI/CD", "Performance", "Analytics", "Security / RLS"] },
-      ],
-    },
-    contact: {
-      label: "Let’s work together",
-      intro:
-        "Have a product to build or an AI feature to ship? I’m open to a small number of freelance and consulting engagements.",
-      reveal: "click to reveal email",
-    },
     home: {
       greeting: "Hi, I'm Eldan — a full-stack product engineer based in Israel.",
       intro2pre: "I design, build, and ship products end to end. Recently: ",
@@ -196,35 +125,19 @@ export const DICT: Record<Locale, Dict> = {
       elsewhereSub: "Where to find me online",
       emailLabel: "Email",
     },
-    footer: { builtBy: "built by eldan galperin" },
     notFound: {
       code: "404",
       title: "Page not found",
       body: "That page doesn’t exist (or moved). Let’s get you back.",
       back: "Back home",
     },
-    cmd: {
-      placeholder: "Type a command or search…",
-      empty: "No results.",
-      navigate: "Navigate",
-      caseStudies: "Case studies",
-      links: "Links",
-      work: "Selected work",
-      about: "About",
-      contact: "Contact",
-      askAI: "Ask the AI assistant",
-      copyEmail: "Copy email",
-      linkedin: "LinkedIn",
-    },
     caseStudy: {
       back: "back to work",
-      roleLabel: "role",
       problem: "The problem",
       built: "What I built",
       impact: "Impact",
       stack: "Stack",
       nextProject: "next project",
-      startProject: "Start a project",
     },
     chat: {
       greeting: "Hi! I'm Eldan's AI assistant. Ask me about his work, skills, or availability.",
@@ -249,48 +162,7 @@ export const DICT: Record<Locale, Dict> = {
     },
   },
   he: {
-    nav: { work: "עבודות", about: "אודות", contact: "יצירת קשר" },
     toggleLabel: "EN",
-    status: [
-      "פנוי לפרויקטים נבחרים בעבודה עצמאית וייעוץ",
-      "בונה מוצרי AI עם Next.js ו‑Claude",
-      "מהקומיט הראשון ועד הפרודקשן",
-    ],
-    hero: {
-      line1: "אני בונה מוצרים דיגיטליים",
-      accent: "מקצה לקצה.",
-      sub: "מהנדס מוצר פולסטאק שמתכנן, בונה ומשגר אפליקציות ווב, מוצרי AI ואוטומציות — מהקומיט הראשון ועד הפרודקשן.",
-      cta1: "לעבודות נבחרות",
-      cta2: "בואו נעבוד יחד",
-    },
-    work: {
-      label: "עבודות נבחרות",
-      intro:
-        "כמה מוצרים שליוויתי מרעיון ועד פרודקשן. פחות פרויקטים, יותר עומק — העבודה היא ההוכחה.",
-    },
-    about: {
-      label: "אודות",
-      paras: [
-        "אני אלדן גלפרין, מהנדס מוצר פולסטאק. אני אוהב לקחת מוצר מהרעיון הראשון והמבולגן ועד משהו שאנשים אמיתיים משתמשים בו — מודל הנתונים, ה‑API, הממשק, ויותר ויותר גם ה‑AI שיושב בתוכו.",
-        "לפני שיצאתי לעצמאות ביליתי ארבע שנים ב‑Body Vision Medical — סטארט-אפ של AI רפואי וראייה ממוחשבת — שם התקדמתי מהובלת צוות QA להנדסת מערכת הניווט הריאתי בזמן אמת של החברה.",
-        "בזמן האחרון זה אומר בניית מוצרים מבוססי AI: עוזר בתוך האפליקציה על Claude, צינורות תוכן מרובי‑דיירים, וסוכנים שמבצעים פעולות אמיתיות. אכפת לי גם מהחלקים הפחות זוהרים — הרשאות, ביצועים, אבטחה, ולגרום לדברים לרוץ מהר גם על טלפון בינוני.",
-      ],
-      ctaLead:
-        "אני לוקח מספר מצומצם של פרויקטים בעבודה עצמאית וייעוץ, שם אני יכול לעשות את העבודה הכי טובה שלי.",
-      ctaLink: "בואו נדבר ←",
-      stack: [
-        { group: "פרונטאנד", items: ["React", "Next.js", "TypeScript", "Tailwind", "Framer Motion"] },
-        { group: "בקאנד", items: ["Node.js", "PostgreSQL", "Supabase", "Edge Functions", "REST"] },
-        { group: "AI / LLM", items: ["Anthropic Claude", "OpenAI", "Function calling", "RAG", "Prompt design"] },
-        { group: "שילוח לפרודקשן", items: ["Vercel", "CI/CD", "ביצועים", "אנליטיקס", "אבטחה / RLS"] },
-      ],
-    },
-    contact: {
-      label: "בואו נעבוד יחד",
-      intro:
-        "יש לכם מוצר לבנות או יכולת AI לשגר? אני פנוי למספר מצומצם של פרויקטים בעבודה עצמאית וייעוץ.",
-      reveal: "לחצו לחשיפת האימייל",
-    },
     home: {
       greeting: "היי, אני אלדן — מהנדס מוצר Full-Stack מישראל.",
       intro2pre: "אני מעצב, בונה ומשיק מוצרים מקצה לקצה. לאחרונה: ",
@@ -309,35 +181,19 @@ export const DICT: Record<Locale, Dict> = {
       elsewhereSub: "קישורים ורשתות",
       emailLabel: "אימייל",
     },
-    footer: { builtBy: "נבנה על ידי אלדן גלפרין" },
     notFound: {
       code: "404",
       title: "הדף לא נמצא",
       body: "הדף הזה לא קיים (או שעבר למקום אחר). בואו נחזיר אתכם הביתה.",
       back: "חזרה לדף הבית",
     },
-    cmd: {
-      placeholder: "הקלידו פקודה או חיפוש…",
-      empty: "אין תוצאות.",
-      navigate: "ניווט",
-      caseStudies: "תיאורי מקרה",
-      links: "קישורים",
-      work: "עבודות נבחרות",
-      about: "אודות",
-      contact: "יצירת קשר",
-      askAI: "שאלו את העוזר החכם",
-      copyEmail: "העתקת אימייל",
-      linkedin: "LinkedIn",
-    },
     caseStudy: {
       back: "חזרה לעבודות",
-      roleLabel: "תפקיד",
       problem: "האתגר",
       built: "מה בניתי",
       impact: "תוצאות",
       stack: "סטאק",
       nextProject: "הפרויקט הבא",
-      startProject: "בוא נתחיל פרויקט",
     },
     chat: {
       greeting: "היי! אני העוזר ה‑AI של אלדן. שאלו אותי על העבודה, היכולות או הזמינות שלו.",
@@ -424,6 +280,3 @@ export const HE_CASE: Record<
     ],
   },
 };
-
-/** Latin-script detection — true when a stack item should NOT be wrapped LTR. */
-export const isHebrew = (s: string) => /^[\u0590-\u05FF]/.test(s);

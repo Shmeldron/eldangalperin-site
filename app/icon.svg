@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="7" fill="#18181b"/>
+  <!-- Monogram "E" — Eldan -->
+  <g fill="#fafafa">
+    <rect x="11" y="8" width="2.8" height="12" rx="0.4"/>
+    <rect x="11" y="8" width="9.5" height="2.8" rx="0.4"/>
+    <rect x="11" y="12.6" width="7.2" height="2.8" rx="0.4"/>
+    <rect x="11" y="17.2" width="9.5" height="2.8" rx="0.4"/>
+  </g>
+  <!-- Emerald underline — echoes the site's link-sweep accent -->
+  <rect x="11" y="23" width="10" height="2.4" rx="1.2" fill="#34d399"/>
+</svg>
