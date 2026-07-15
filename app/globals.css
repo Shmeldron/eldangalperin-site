@@ -20,7 +20,7 @@
   --border:     #e4e4e7;
   --card:       #ffffff; /* media frame bg */
   --card-border:#e5e5e5;
-  --accent:     #059669; /* emerald-600 — legible on white; links only */
+  --accent:     #047857; /* emerald-700 — AA contrast on white; links only */
   color-scheme: light;
 }
 
@@ -45,7 +45,7 @@
 :root[data-theme="light"] {
   --background: #ffffff; --foreground: #171717; --text-mid: #52525b;
   --muted: #71717a; --faint: #a1a1aa; --dim: #d4d4d8; --border: #e4e4e7;
-  --card: #ffffff; --card-border: #e5e5e5; --accent: #059669;
+  --card: #ffffff; --card-border: #e5e5e5; --accent: #047857;
   color-scheme: light;
 }
 :root[data-theme="dark"] {

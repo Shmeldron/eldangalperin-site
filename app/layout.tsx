@@ -82,6 +82,7 @@ export default async function RootLayout({
       lang={locale}
       dir={DIR[locale]}
       data-scroll-behavior="smooth"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${plexHe.variable} h-full antialiased`}
     >
       <body className="min-h-full">
