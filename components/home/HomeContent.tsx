@@ -20,9 +20,9 @@ export function HomeContent() {
     <div className="mx-auto w-full max-w-[600px] px-4 pb-24">
       {/* Intro — the "who I am + what I can do", in plain prose. */}
       <motion.section
-        initial={shouldReduce ? false : { opacity: 0, y: 6 }}
+        initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: shouldReduce ? 0 : 0.5, ease: "easeOut" }}
         className="mt-8 flex flex-col gap-2 text-[15px] leading-relaxed text-foreground"
       >
         <h1 className="font-normal">{t.greeting}</h1>
