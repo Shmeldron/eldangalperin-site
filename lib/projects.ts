@@ -95,10 +95,12 @@ export const projects: Project[] = [
       "An RTL-first design system keeps the mobile experience fast and consistent.",
     ],
     screenshots: [
-      { src: "/work/stayyoung/home.png", alt: "StayYoung member app — personalised home", frame: "phone", ready: true },
-      { src: "/work/stayyoung/chat.png", alt: "Tovi, the AI coach, answering a member's question in Hebrew", frame: "phone", ready: true },
+      // Lead with the strongest, most populated shots (card hero = first entry).
+      // journal.png removed: it showed a named third-party instructor, two
+      // identifiable faces, and a live Zoom ID — pending the owner's OK to publish.
       { src: "/work/stayyoung/cover.png", alt: "StayYoung member app — recipe & content library", frame: "phone", ready: true },
-      { src: "/work/stayyoung/journal.png", alt: "StayYoung app — live sessions & journal", frame: "phone", ready: true },
+      { src: "/work/stayyoung/chat.png", alt: "Tovi, the AI coach, answering a member's question in Hebrew", frame: "phone", ready: true },
+      { src: "/work/stayyoung/home.png", alt: "StayYoung member app — personalised home", frame: "phone", ready: true },
     ],
   },
   {
@@ -138,8 +140,9 @@ export const projects: Project[] = [
       "Funnels, ads, finance, and bookings live in one place, built around how the business actually operates.",
     ],
     screenshots: [
-      { src: "/work/stayyoung-platform/funnel-builder.png", alt: "StayYoung platform — funnel builder (sales → upsell → thank-you)", frame: "browser", ready: true },
+      // Lead with the strongest usage numbers (card hero = first entry).
       { src: "/work/stayyoung-platform/ai-agents.png", alt: "StayYoung platform — AI agents dashboard", frame: "browser", ready: true },
+      { src: "/work/stayyoung-platform/funnel-builder.png", alt: "StayYoung platform — funnel builder (sales → upsell → thank-you)", frame: "browser", ready: true },
       { src: "/work/stayyoung-platform/automations.png", alt: "StayYoung platform — billing & dunning automations", frame: "browser", ready: true },
     ],
   },
