@@ -49,7 +49,21 @@ export function HomeContent() {
       <section id="work" className="mt-10 scroll-mt-20">
         <h2 className="text-[15px] font-normal text-muted">{t.projectsLabel}</h2>
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {featured.map((p) => <ProjectCard key={p.slug} project={p} />)}
+          {featured.map((p, i) => (
+            <motion.div
+              key={p.slug}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{
+                duration: shouldReduce ? 0 : 0.45,
+                delay: shouldReduce ? 0 : i * 0.06,
+                ease: "easeOut",
+              }}
+            >
+              <ProjectCard project={p} />
+            </motion.div>
+          ))}
         </div>
       </section>
 
