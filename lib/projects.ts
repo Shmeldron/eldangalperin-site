@@ -143,7 +143,8 @@ export const projects: Project[] = [
       // Lead with the strongest usage numbers (card hero = first entry).
       { src: "/work/stayyoung-platform/ai-agents.png", alt: "StayYoung platform — AI agents dashboard", frame: "browser", ready: true },
       { src: "/work/stayyoung-platform/funnel-builder.png", alt: "StayYoung platform — funnel builder (sales → upsell → thank-you)", frame: "browser", ready: true },
-      { src: "/work/stayyoung-platform/automations.png", alt: "StayYoung platform — billing & dunning automations", frame: "browser", ready: true },
+      // automations.png held back — its "0% success" columns read as broken;
+      // re-add once re-captured with healthy success rates.
     ],
   },
   {
