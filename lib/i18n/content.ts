@@ -81,6 +81,15 @@ export type Dict = {
     stack: StackCol[];
   };
   contact: { label: string; intro: string; reveal: string };
+  home: {
+    greeting: string;
+    intro2pre: string; intro2sy: string; intro2mid: string;
+    intro2platform: string; intro2post: string;
+    ctaLead: string; ctaBook: string; ctaMid: string;
+    ctaLinkedin: string; ctaPost: string;
+    projectsLabel: string; moreLabel: string;
+    elsewhereLabel: string; elsewhereSub: string; emailLabel: string;
+  };
   footer: { builtBy: string };
   notFound: { code: string; title: string; body: string; back: string };
   cmd: {
@@ -168,6 +177,24 @@ export const DICT: Record<Locale, Dict> = {
       intro:
         "Have a product to build or an AI feature to ship? I’m open to a small number of freelance and consulting engagements.",
       reveal: "click to reveal email",
+    },
+    home: {
+      greeting: "Hi, I'm Eldan — a full-stack product engineer based in Israel.",
+      intro2pre: "I design, build, and ship products end to end. Recently: ",
+      intro2sy: "StayYoung",
+      intro2mid: ", an AI wellness app, and its ",
+      intro2platform: "growth platform",
+      intro2post: ".",
+      ctaLead: "Want to work together? ",
+      ctaBook: "Book a call",
+      ctaMid: " or reach out on ",
+      ctaLinkedin: "LinkedIn",
+      ctaPost: ".",
+      projectsLabel: "Projects",
+      moreLabel: "More",
+      elsewhereLabel: "Elsewhere",
+      elsewhereSub: "Where to find me online",
+      emailLabel: "Email",
     },
     footer: { builtBy: "built by eldan galperin" },
     notFound: {
@@ -263,6 +290,24 @@ export const DICT: Record<Locale, Dict> = {
       intro:
         "יש לכם מוצר לבנות או יכולת AI לשגר? אני פנוי למספר מצומצם של פרויקטים בעבודה עצמאית וייעוץ.",
       reveal: "לחצו לחשיפת האימייל",
+    },
+    home: {
+      greeting: "היי, אני אלדן — מהנדס מוצר Full-Stack מישראל.",
+      intro2pre: "אני מעצב, בונה ומשיק מוצרים מקצה לקצה. לאחרונה: ",
+      intro2sy: "StayYoung",
+      intro2mid: ", אפליקציית בריאות מבוססת AI, ו",
+      intro2platform: "פלטפורמת הצמיחה",
+      intro2post: " שלה.",
+      ctaLead: "רוצים לעבוד יחד? ",
+      ctaBook: "קבעו שיחה",
+      ctaMid: " או פנו אליי ב",
+      ctaLinkedin: "LinkedIn",
+      ctaPost: ".",
+      projectsLabel: "פרויקטים",
+      moreLabel: "עוד",
+      elsewhereLabel: "איפה למצוא אותי",
+      elsewhereSub: "קישורים ורשתות",
+      emailLabel: "אימייל",
     },
     footer: { builtBy: "נבנה על ידי אלדן גלפרין" },
     notFound: {
