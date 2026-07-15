@@ -9,20 +9,18 @@ import { useLocale } from "@/lib/i18n/LocaleProvider";
 export function EmailReveal() {
   const { locale } = useLocale();
   const [revealed, setRevealed] = useState(false);
+  const linkClassName =
+    "text-text-mid underline decoration-dotted decoration-faint underline-offset-[3px] hover:text-accent hover:decoration-accent";
 
   if (revealed) {
     return (
-      <a dir="ltr" href={`mailto:${emailAddress}`} className="text-text-mid underline decoration-dotted decoration-faint underline-offset-[3px] hover:text-accent hover:decoration-accent">
+      <a dir="ltr" href={`mailto:${emailAddress}`} className={linkClassName}>
         {emailAddress}
       </a>
     );
   }
   return (
-    <button
-      type="button"
-      onClick={() => setRevealed(true)}
-      className="text-text-mid underline decoration-dotted decoration-faint underline-offset-[3px] hover:text-accent hover:decoration-accent"
-    >
+    <button type="button" onClick={() => setRevealed(true)} className={linkClassName}>
       {DICT[locale].home.emailLabel}
     </button>
   );

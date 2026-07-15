@@ -25,10 +25,10 @@ export function ProjectCard({ project }: { project: Project }) {
             className="h-[92%] w-[92%] self-end rounded-t-md object-cover object-top"
           />
         ) : (
-          <span className="pb-6 font-mono text-xs text-faint">{project.title}</span>
+          <span dir="ltr" className="pb-6 font-mono text-xs text-faint">{project.title}</span>
         )}
       </div>
-      <p className="mt-2 px-0.5 text-[15px] font-medium text-foreground transition-colors group-hover:text-accent">
+      <p dir="ltr" className="mt-2 px-0.5 text-[15px] font-medium text-foreground transition-colors group-hover:text-accent">
         {project.title}
       </p>
       <p className="mt-0.5 px-0.5 text-sm text-text-mid text-balance">{kicker}</p>
