@@ -1,19 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 
-/** Light/dark toggle. Reads the attribute set by the no-flash script in layout
- *  via a lazy state initializer — by the time this Client Component hydrates,
- *  that inline script has already run, so reading `data-theme` here matches
- *  the DOM and avoids both a hydration mismatch and a set-state-in-effect
- *  render cascade (see Next.js docs: preventing-flash-before-hydration).
- *  Flips the attribute on click and persists to localStorage. */
+/** Light/dark toggle. Starts at "light" to match the server render (theme is
+ *  not known at SSR time — there is no theme cookie), then syncs to the real
+ *  attribute set by the no-flash inline script after mount. Initializing from
+ *  the live DOM during render instead would mismatch hydration for dark-mode
+ *  visitors, since the inline script patches <html> data-theme but not this
+ *  button's own markup. */
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof window === "undefined") return "light";
-    return (document.documentElement.getAttribute("data-theme") as "light" | "dark") || "light";
-  });
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const current = (document.documentElement.getAttribute("data-theme") as "light" | "dark") || "light";
+    // Syncing from the no-flash inline script's DOM attribute post-hydration is the
+    // documented Next.js exception (preventing-flash-before-hydration); reading it during
+    // render instead would cause a real server/client mismatch (Moon vs Sun).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTheme(current);
+  }, []);
 
   function toggle() {
     const next = theme === "dark" ? "light" : "dark";
