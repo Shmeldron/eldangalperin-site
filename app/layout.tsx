@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Space_Grotesk, JetBrains_Mono, Rubik, IBM_Plex_Sans_Hebrew } from "next/font/google";
+import { Geist, Geist_Mono, IBM_Plex_Sans_Hebrew } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { Header } from "@/components/Header";
@@ -12,33 +12,18 @@ import { LangSwitch } from "@/components/i18n/LangSwitch";
 import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 import { DIR, LOCALE_COOKIE, type Locale } from "@/lib/i18n/content";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-// Hebrew faces: Rubik for display headings, IBM Plex Sans Hebrew for body.
-// Applied by lang-scoped rules in globals.css (English keeps Space Grotesk).
-const rubikHe = Rubik({
-  variable: "--font-rubik-he",
-  subsets: ["hebrew", "latin"],
-  weight: ["500", "600", "700", "800"],
-  display: "swap",
-});
-
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
 const plexHe = IBM_Plex_Sans_Hebrew({
   variable: "--font-plex-he",
   subsets: ["hebrew", "latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
+
+// Sets the theme attribute before first paint so there is no light->dark
+// flash on load. Reads localStorage; falls back to the OS preference.
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
 
 // Metadata is locale-aware: og:locale reflects the cookie that drives <html lang>,
 // and the other language is advertised as an alternate so crawlers/social know the
@@ -100,9 +85,10 @@ export default async function RootLayout({
       lang={locale}
       dir={DIR[locale]}
       data-scroll-behavior="smooth"
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${rubikHe.variable} ${plexHe.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${plexHe.variable} h-full antialiased`}
     >
       <body className="min-h-full">
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <LocaleProvider initialLocale={locale}>
           <Header />
           <main>{children}</main>
