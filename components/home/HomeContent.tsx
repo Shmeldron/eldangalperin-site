@@ -27,7 +27,7 @@ export function HomeContent() {
         <p>{t.greeting}</p>
         <p>
           {t.intro2pre}
-          <Link href="/work/stayyoung" className="link-sweep">{t.intro2sy}</Link>
+          <Link href="/work/stayyoung" dir="ltr" className="link-sweep">{t.intro2sy}</Link>
           {t.intro2mid}
           <Link href="/work/stayyoung-platform" className="link-sweep">{t.intro2platform}</Link>
           {t.intro2post}
