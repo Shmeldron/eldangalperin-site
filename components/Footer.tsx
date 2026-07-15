@@ -1,44 +1,18 @@
 "use client";
 
-import Link from "next/link";
-import { LinkedinIcon } from "@/components/icons/Brand";
-import { site } from "@/lib/site";
-import { DICT } from "@/lib/i18n/content";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
+import { site } from "@/lib/site";
 
 export function Footer() {
   const { locale } = useLocale();
-  const t = DICT[locale];
+  const updated = locale === "he" ? "עודכן לאחרונה · יולי 2026" : "Last updated · July 2026";
+  const name = locale === "he" ? "אלדן גלפרין" : site.name;
 
   return (
-    <footer className="border-t border-border">
-      <div className="mx-auto flex w-full max-w-6xl flex-col items-start justify-between gap-6 px-6 py-10 sm:flex-row sm:items-center sm:px-10">
-        <div className="text-xs text-muted">
-          <p>
-            <span dir="ltr" className="font-mono text-accent">$</span> {t.footer.builtBy}
-          </p>
-          <p className="mt-1">
-            <span dir="ltr" className="font-mono">Next.js · TypeScript · Tailwind · deployed on Vercel</span>
-          </p>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <Link href="/#work" className="text-xs text-muted hover:text-foreground">
-            {t.nav.work}
-          </Link>
-          <Link href="/#contact" className="text-xs text-muted hover:text-foreground">
-            {t.nav.contact}
-          </Link>
-          <a
-            href={site.socials.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="-m-2 inline-flex h-11 w-11 items-center justify-center p-2 text-muted hover:text-accent"
-          >
-            <LinkedinIcon className="h-4 w-4" />
-          </a>
-        </div>
+    <footer className="mx-auto w-full max-w-[600px] px-4 pb-16">
+      <div className="flex flex-col gap-1 border-t border-border pt-4 text-[13px] text-muted sm:flex-row sm:justify-between">
+        <span>{updated}</span>
+        <span dir="ltr" className="sm:text-end">© 2026 {name}</span>
       </div>
     </footer>
   );
