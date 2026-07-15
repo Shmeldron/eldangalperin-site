@@ -5,10 +5,7 @@ import "./globals.css";
 import { site } from "@/lib/site";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { CommandPalette } from "@/components/CommandPalette";
-import { ChatWidget } from "@/components/chat/ChatWidget";
 import { VercelAnalytics } from "@/components/VercelAnalytics";
-import { LangSwitch } from "@/components/i18n/LangSwitch";
 import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 import { DIR, LOCALE_COOKIE, type Locale } from "@/lib/i18n/content";
 
@@ -93,9 +90,6 @@ export default async function RootLayout({
           <Header />
           <main>{children}</main>
           <Footer />
-          <LangSwitch />
-          <CommandPalette />
-          <ChatWidget />
         </LocaleProvider>
         <VercelAnalytics />
       </body>
