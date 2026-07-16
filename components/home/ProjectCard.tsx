@@ -5,6 +5,7 @@ import type { Project } from "@/lib/projects";
 import { HE_PROJECT } from "@/lib/i18n/content";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { PreviewVideo } from "@/components/PreviewVideo";
+import { PhoneCarousel } from "@/components/home/PhoneCarousel";
 
 /** Minimal project card: a bordered media frame + a title that tints to the
  *  accent on hover. If the project has a `preview` clip it plays as a muted,
@@ -17,14 +18,17 @@ export function ProjectCard({ project }: { project: Project }) {
   const kicker = locale === "he" && he ? he.kicker : project.kicker;
   const shot = project.screenshots.find((s) => s.ready);
   const preview = project.preview;
+  const cardShots = project.cardShots;
 
   const mediaClass =
     "h-[92%] w-[92%] origin-top self-end rounded-t-md object-cover object-top";
 
   return (
     <Link href={`/work/${project.slug}`} className="group block">
-      <div className="flex h-40 items-end justify-center overflow-hidden rounded-xl border border-card-border bg-card transition-colors duration-300 group-hover:border-accent/50">
-        {preview ? (
+      <div className="flex h-48 items-end justify-center overflow-hidden rounded-xl border border-card-border bg-card transition-colors duration-300 group-hover:border-accent/50">
+        {cardShots?.length ? (
+          <PhoneCarousel shots={cardShots} className="h-[90%] self-center" />
+        ) : preview ? (
           <PreviewVideo preview={preview} className={mediaClass} />
         ) : shot ? (
           // eslint-disable-next-line @next/next/no-img-element

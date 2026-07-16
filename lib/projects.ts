@@ -52,6 +52,13 @@ export type Project = {
    * source tried before the `mp4` fallback.
    */
   preview?: { mp4: string; webm?: string; poster: string; alt: string };
+  /**
+   * Home-card screens for a mobile app: shown as a floating phone that slides
+   * through them (a single phone would crop in the wide card). All entries must
+   * share one aspect ratio. When set, the card uses this instead of `preview`;
+   * `preview` still drives the larger case-study hero.
+   */
+  cardShots?: { src: string; alt: string }[];
 };
 
 export const projects: Project[] = [
@@ -122,6 +129,14 @@ export const projects: Project[] = [
       poster: "/work/stayyoung/tovi-loop-poster.png",
       alt: "Tovi, the in-app AI coach, thinking through and answering a wellness question in Hebrew",
     },
+    // Home card = a floating phone sliding through several real screens (not just
+    // Tovi), so it fits the wide card and mirrors the platform card's slide.
+    cardShots: [
+      { src: "/work/stayyoung/home.png", alt: "The StayYoung app — home, Tovi the AI coach, challenges, and recipes" },
+      { src: "/work/stayyoung/tovi.png", alt: "Tovi, the in-app AI coach, answering in Hebrew" },
+      { src: "/work/stayyoung/challenges.png", alt: "StayYoung challenges" },
+      { src: "/work/stayyoung/recipes.png", alt: "StayYoung recipe library" },
+    ],
   },
   {
     slug: "stayyoung-platform",
