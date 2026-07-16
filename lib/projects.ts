@@ -104,9 +104,11 @@ export const projects: Project[] = [
     // Media re-captured 2026-07-15 at true 3x from the real app (localhost:8080,
     // owner's own account). journal.png/cover(recipes) retired. The card plays
     // the `preview` loop; these stills are the case-study gallery.
+    // The hero loop is Tovi (the AI coach) answering a wellness question live —
+    // the app's differentiator. The stills carry the rest of the breadth, so
+    // the static Tovi shot is dropped (the video covers it).
     screenshots: [
       { src: "/work/stayyoung/home.png", alt: "StayYoung app — personalised home with challenge progress and daily tasks", frame: "phone", ready: true },
-      { src: "/work/stayyoung/chat.png", alt: "Tovi, the in-app AI coach, answering a wellness question in Hebrew", frame: "phone", ready: true },
       { src: "/work/stayyoung/library.png", alt: "StayYoung app — the course & content library", frame: "phone", ready: true },
       { src: "/work/stayyoung/challenges.png", alt: "StayYoung app — time-boxed fitness challenges with day-by-day progress", frame: "phone", ready: true },
       { src: "/work/stayyoung/recipes.png", alt: "StayYoung app — the recipe library, filtered by diet, time, and course", frame: "phone", ready: true },
@@ -115,7 +117,7 @@ export const projects: Project[] = [
       mp4: "/work/stayyoung/app-loop.mp4",
       webm: "/work/stayyoung/app-loop.webm",
       poster: "/work/stayyoung/app-loop-poster.png",
-      alt: "The StayYoung app course library, scrolling through enrolled courses",
+      alt: "Tovi, the in-app AI coach, thinking through and answering a wellness question in Hebrew",
     },
   },
   {
@@ -154,21 +156,16 @@ export const projects: Project[] = [
       "Keeps the money-critical path running unattended — recurring billing, dunning, retries, and reconciliation.",
       "Funnels, ads, finance, and bookings live in one place, built around how the business actually operates.",
     ],
-    // The card + case-study hero play a slow Ken-Burns loop of the real AI-agents
-    // dashboard (ambient motion — no live capture is possible without the owner's
-    // Google login). ai-agents lives in the loop, so the still gallery is the
-    // other real dashboard only (no duplicate).
+    // Crisp stills — no `preview` loop. The earlier Ken-Burns zoom read as an odd
+    // "breathing" of a static dashboard; real motion needs a live screen
+    // recording of the platform (blocked on a login). Revisit with a real
+    // walkthrough capture once access is available.
     screenshots: [
+      { src: "/work/stayyoung-platform/ai-agents.png", alt: "StayYoung platform — AI agents dashboard", frame: "browser", ready: true },
       { src: "/work/stayyoung-platform/funnel-builder.png", alt: "StayYoung platform — funnel builder (sales → upsell → thank-you)", frame: "browser", ready: true },
       // automations.png held back — its "0% success" columns read as broken;
       // re-add once re-captured with healthy success rates.
     ],
-    preview: {
-      mp4: "/work/stayyoung-platform/app-loop.mp4",
-      webm: "/work/stayyoung-platform/app-loop.webm",
-      poster: "/work/stayyoung-platform/app-loop-poster.png",
-      alt: "The StayYoung platform AI-agents dashboard",
-    },
   },
   {
     slug: "whatsapp-assistant",
