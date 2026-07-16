@@ -113,10 +113,13 @@ export const projects: Project[] = [
       { src: "/work/stayyoung/challenges.png", alt: "StayYoung app — time-boxed fitness challenges with day-by-day progress", frame: "phone", ready: true },
       { src: "/work/stayyoung/recipes.png", alt: "StayYoung app — the recipe library, filtered by diet, time, and course", frame: "phone", ready: true },
     ],
+    // Filename is versioned (tovi-loop, not the reused app-loop) so browsers that
+    // cached the earlier clip re-fetch it. Cropped to drop the generic app-header
+    // bar, so the card leads with the "Tovi · AI · 24/7" coach header + answer.
     preview: {
-      mp4: "/work/stayyoung/app-loop.mp4",
-      webm: "/work/stayyoung/app-loop.webm",
-      poster: "/work/stayyoung/app-loop-poster.png",
+      mp4: "/work/stayyoung/tovi-loop.mp4",
+      webm: "/work/stayyoung/tovi-loop.webm",
+      poster: "/work/stayyoung/tovi-loop-poster.png",
       alt: "Tovi, the in-app AI coach, thinking through and answering a wellness question in Hebrew",
     },
   },
