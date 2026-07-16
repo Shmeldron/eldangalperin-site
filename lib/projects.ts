@@ -156,16 +156,22 @@ export const projects: Project[] = [
       "Keeps the money-critical path running unattended — recurring billing, dunning, retries, and reconciliation.",
       "Funnels, ads, finance, and bookings live in one place, built around how the business actually operates.",
     ],
-    // Crisp stills — no `preview` loop. The earlier Ken-Burns zoom read as an odd
-    // "breathing" of a static dashboard; real motion needs a live screen
-    // recording of the platform (blocked on a login). Revisit with a real
-    // walkthrough capture once access is available.
+    // Card + hero play a slide carousel through the real dashboards (AI agents →
+    // funnels → automations) — a horizontal slide at a *fixed* zoom, which reads
+    // as "flipping through the platform" (the earlier Ken-Burns *scaling* looked
+    // like odd breathing). automations appears only in the moving loop, not as a
+    // lingering still (its "0% success" columns read as broken). The stills below
+    // are the two healthy dashboards, kept as readable detail.
     screenshots: [
       { src: "/work/stayyoung-platform/ai-agents.png", alt: "StayYoung platform — AI agents dashboard", frame: "browser", ready: true },
       { src: "/work/stayyoung-platform/funnel-builder.png", alt: "StayYoung platform — funnel builder (sales → upsell → thank-you)", frame: "browser", ready: true },
-      // automations.png held back — its "0% success" columns read as broken;
-      // re-add once re-captured with healthy success rates.
     ],
+    preview: {
+      mp4: "/work/stayyoung-platform/app-loop.mp4",
+      webm: "/work/stayyoung-platform/app-loop.webm",
+      poster: "/work/stayyoung-platform/app-loop-poster.png",
+      alt: "The StayYoung platform — sliding through the AI agents, funnel builder, and automation dashboards",
+    },
   },
   {
     slug: "whatsapp-assistant",
