@@ -45,6 +45,13 @@ export type Project = {
   build: string[];
   impact: string[];
   screenshots: Screenshot[];
+  /**
+   * Optional looping video preview for the home card (reference-style "the
+   * product is alive" animation). Rendered muted + looping; `poster` (a still)
+   * shows before load and under reduced-motion. `webm` is an optional smaller
+   * source tried before the `mp4` fallback.
+   */
+  preview?: { mp4: string; webm?: string; poster: string; alt: string };
 };
 
 export const projects: Project[] = [
@@ -94,14 +101,22 @@ export const projects: Project[] = [
       "Tovi fields hundreds of member questions a week — 24/7, with hard cost and rate guardrails.",
       "An RTL-first design system keeps the mobile experience fast and consistent.",
     ],
+    // Media re-captured 2026-07-15 at true 3x from the real app (localhost:8080,
+    // owner's own account). journal.png/cover(recipes) retired. The card plays
+    // the `preview` loop; these stills are the case-study gallery.
     screenshots: [
-      // Lead with the strongest, most populated shots (card hero = first entry).
-      // journal.png removed: it showed a named third-party instructor, two
-      // identifiable faces, and a live Zoom ID — pending the owner's OK to publish.
-      { src: "/work/stayyoung/cover.png", alt: "StayYoung member app — recipe & content library", frame: "phone", ready: true },
-      { src: "/work/stayyoung/chat.png", alt: "Tovi, the AI coach, answering a member's question in Hebrew", frame: "phone", ready: true },
-      { src: "/work/stayyoung/home.png", alt: "StayYoung member app — personalised home", frame: "phone", ready: true },
+      { src: "/work/stayyoung/home.png", alt: "StayYoung app — personalised home with challenge progress and daily tasks", frame: "phone", ready: true },
+      { src: "/work/stayyoung/chat.png", alt: "Tovi, the in-app AI coach, answering a wellness question in Hebrew", frame: "phone", ready: true },
+      { src: "/work/stayyoung/library.png", alt: "StayYoung app — the course & content library", frame: "phone", ready: true },
+      { src: "/work/stayyoung/challenges.png", alt: "StayYoung app — time-boxed fitness challenges with day-by-day progress", frame: "phone", ready: true },
+      { src: "/work/stayyoung/recipes.png", alt: "StayYoung app — the recipe library, filtered by diet, time, and course", frame: "phone", ready: true },
     ],
+    preview: {
+      mp4: "/work/stayyoung/app-loop.mp4",
+      webm: "/work/stayyoung/app-loop.webm",
+      poster: "/work/stayyoung/app-loop-poster.png",
+      alt: "The StayYoung app course library, scrolling through enrolled courses",
+    },
   },
   {
     slug: "stayyoung-platform",
@@ -139,13 +154,21 @@ export const projects: Project[] = [
       "Keeps the money-critical path running unattended — recurring billing, dunning, retries, and reconciliation.",
       "Funnels, ads, finance, and bookings live in one place, built around how the business actually operates.",
     ],
+    // The card + case-study hero play a slow Ken-Burns loop of the real AI-agents
+    // dashboard (ambient motion — no live capture is possible without the owner's
+    // Google login). ai-agents lives in the loop, so the still gallery is the
+    // other real dashboard only (no duplicate).
     screenshots: [
-      // Lead with the strongest usage numbers (card hero = first entry).
-      { src: "/work/stayyoung-platform/ai-agents.png", alt: "StayYoung platform — AI agents dashboard", frame: "browser", ready: true },
       { src: "/work/stayyoung-platform/funnel-builder.png", alt: "StayYoung platform — funnel builder (sales → upsell → thank-you)", frame: "browser", ready: true },
       // automations.png held back — its "0% success" columns read as broken;
       // re-add once re-captured with healthy success rates.
     ],
+    preview: {
+      mp4: "/work/stayyoung-platform/app-loop.mp4",
+      webm: "/work/stayyoung-platform/app-loop.webm",
+      poster: "/work/stayyoung-platform/app-loop-poster.png",
+      alt: "The StayYoung platform AI-agents dashboard",
+    },
   },
   {
     slug: "whatsapp-assistant",

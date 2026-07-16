@@ -4,6 +4,9 @@ import Link from "next/link";
 import type { Project } from "@/lib/projects";
 import { DICT, HE_CASE, HE_PROJECT } from "@/lib/i18n/content";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
+import { PreviewVideo } from "@/components/PreviewVideo";
+import { TerminalMotif } from "@/components/work/TerminalMotif";
+import { StoreBadge, isStoreLink } from "@/components/work/StoreBadges";
 
 export function CaseStudyContent({
   project,
@@ -23,7 +26,31 @@ export function CaseStudyContent({
   const problem = isHe && heCase ? heCase.problem : project.problem;
   const build = isHe && heCase ? heCase.build : project.build;
   const impact = isHe && heCase ? heCase.impact : project.impact;
-  const hero = project.screenshots.find((s) => s.ready);
+
+  const shots = project.screenshots.filter((s) => s.ready);
+  const isPhone = (shots[0]?.frame ?? "browser") === "phone";
+  const isService = project.kind === "service";
+  // The hero is the animated preview when present; otherwise the first
+  // screenshot; otherwise (a UI-less service) the terminal motif. Whatever the
+  // hero consumes is removed from the gallery so it never shows twice.
+  const heroShot = !project.preview && shots.length > 0 ? shots[0] : null;
+  const galleryShots = heroShot ? shots.slice(1) : shots;
+  const heroFrameClass = isPhone ? "w-full max-w-[260px]" : "w-full";
+
+  const storeLinks = (project.links ?? []).filter((l) => isStoreLink(l.href));
+  const otherLinks = (project.links ?? []).filter((l) => !isStoreLink(l.href));
+
+  const gallery =
+    galleryShots.length > 0 ? (
+      <div className={`mt-6 grid gap-3 ${isPhone ? "grid-cols-2 sm:grid-cols-3" : "grid-cols-1"}`}>
+        {galleryShots.map((s) => (
+          <div key={s.src} className="frame overflow-hidden p-1.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={s.src} alt={s.alt} className="w-full rounded-md object-cover" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    ) : null;
 
   return (
     <article className="mx-auto w-full max-w-[600px] px-4 pb-24">
@@ -39,16 +66,32 @@ export function CaseStudyContent({
       <h1 dir="ltr" className="mt-1 text-lg text-foreground">{project.title}</h1>
       <p className="mt-2 text-[15px] text-text-mid text-balance">{tagline}</p>
 
-      {hero && (
-        <div className="frame mt-6 overflow-hidden p-2">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={hero.src} alt={hero.alt} className="w-full rounded-md object-cover" loading="lazy" />
+      {/* Hero — animated preview / lead screenshot / terminal motif. */}
+      {project.preview ? (
+        <div className="mt-6 flex justify-center">
+          <div className={`frame overflow-hidden p-1.5 ${heroFrameClass}`}>
+            <PreviewVideo preview={project.preview} className="w-full rounded-md" />
+          </div>
         </div>
-      )}
+      ) : heroShot ? (
+        <div className="mt-6 flex justify-center">
+          <div className={`frame overflow-hidden p-1.5 ${heroFrameClass}`}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={heroShot.src} alt={heroShot.alt} className="w-full rounded-md object-cover" />
+          </div>
+        </div>
+      ) : isService && project.terminal ? (
+        <div className="mt-6">
+          <TerminalMotif lines={project.terminal} label={`${project.title} — system overview`} />
+        </div>
+      ) : null}
 
-      {project.links && project.links.length > 0 && (
-        <div className="mt-4 flex flex-wrap gap-4" dir="ltr">
-          {project.links.map((l) => (
+      {(storeLinks.length > 0 || otherLinks.length > 0) && (
+        <div className="mt-6 flex flex-wrap items-center gap-3" dir="ltr">
+          {storeLinks.map((l) => (
+            <StoreBadge key={l.href} href={l.href} />
+          ))}
+          {otherLinks.map((l) => (
             <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="link-sweep text-sm">
               {l.label}
             </a>
@@ -66,6 +109,11 @@ export function CaseStudyContent({
           ))}
         </ul>
       </Section>
+
+      {/* Gallery sits with the "Built" narrative — the product shown right where
+          the work is described, rather than dumped above all the text. */}
+      {gallery}
+
       <Section title={t.impact}>
         <ul className="flex flex-col gap-2 text-[15px] leading-relaxed text-text-mid">
           {impact.map((b, i) => (
