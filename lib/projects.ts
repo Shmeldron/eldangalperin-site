@@ -108,17 +108,19 @@ export const projects: Project[] = [
       "Tovi fields hundreds of member questions a week — 24/7, with hard cost and rate guardrails.",
       "An RTL-first design system keeps the mobile experience fast and consistent.",
     ],
-    // Media re-captured 2026-07-15 at true 3x from the real app (localhost:8080,
-    // owner's own account). journal.png/cover(recipes) retired. The card plays
-    // the `preview` loop; these stills are the case-study gallery.
+    // Media re-captured 2026-07-16 at true 3x from the real app (localhost:8080,
+    // owner's account) in MEMBER VIEW: dev tools ("צפה כמשתמש רגיל") + the dev-only
+    // hammer button hidden, so these match what a real member sees — no admin
+    // edit-pencils, no dev chrome. `-v2` suffix cache-busts the earlier admin-build
+    // stills. The card plays the `preview` loop; these stills are the case-study gallery.
     // The hero loop is Tovi (the AI coach) answering a wellness question live —
     // the app's differentiator. The stills carry the rest of the breadth, so
     // the static Tovi shot is dropped (the video covers it).
     screenshots: [
-      { src: "/work/stayyoung/home.png", alt: "StayYoung app — personalised home with challenge progress and daily tasks", frame: "phone", ready: true },
-      { src: "/work/stayyoung/library.png", alt: "StayYoung app — the course & content library", frame: "phone", ready: true },
-      { src: "/work/stayyoung/challenges.png", alt: "StayYoung app — time-boxed fitness challenges with day-by-day progress", frame: "phone", ready: true },
-      { src: "/work/stayyoung/recipes.png", alt: "StayYoung app — the recipe library, filtered by diet, time, and course", frame: "phone", ready: true },
+      { src: "/work/stayyoung/home-v2.png", alt: "StayYoung app — personalised home with challenge progress and daily tasks", frame: "phone", ready: true },
+      { src: "/work/stayyoung/library-v2.png", alt: "StayYoung app — the course & content library", frame: "phone", ready: true },
+      { src: "/work/stayyoung/challenges-v2.png", alt: "StayYoung app — time-boxed fitness challenges with day-by-day progress", frame: "phone", ready: true },
+      { src: "/work/stayyoung/recipes-v2.png", alt: "StayYoung app — the recipe library, filtered by diet, time, and course", frame: "phone", ready: true },
     ],
     // Filename is versioned (tovi-loop, not the reused app-loop) so browsers that
     // cached the earlier clip re-fetch it. Cropped to drop the generic app-header
@@ -132,10 +134,10 @@ export const projects: Project[] = [
     // Home card = a floating phone sliding through several real screens (not just
     // Tovi), so it fits the wide card and mirrors the platform card's slide.
     cardShots: [
-      { src: "/work/stayyoung/home.png", alt: "The StayYoung app — home, Tovi the AI coach, challenges, and recipes" },
-      { src: "/work/stayyoung/tovi.png", alt: "Tovi, the in-app AI coach, answering in Hebrew" },
-      { src: "/work/stayyoung/challenges.png", alt: "StayYoung challenges" },
-      { src: "/work/stayyoung/recipes.png", alt: "StayYoung recipe library" },
+      { src: "/work/stayyoung/home-v2.png", alt: "The StayYoung app — home, Tovi the AI coach, challenges, and recipes" },
+      { src: "/work/stayyoung/tovi-v2.png", alt: "Tovi, the in-app AI coach, answering in Hebrew" },
+      { src: "/work/stayyoung/challenges-v2.png", alt: "StayYoung challenges" },
+      { src: "/work/stayyoung/recipes-v2.png", alt: "StayYoung recipe library" },
     ],
   },
   {
