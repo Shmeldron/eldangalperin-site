@@ -182,8 +182,9 @@ export const projects: Project[] = [
     // with the two builders (they're the differentiators): the AI funnel editor
     // (chat + live preview) and the visual automation canvas. The automation shot
     // uses a production automation (POST → broadcast.stayyoung.live), NOT a
-    // localhost/test one. Card + hero slide through editor → automation → fleet —
-    // a horizontal slide at a *fixed* zoom ("flipping through the platform").
+    // localhost/test one. Card + hero are a held-still slide carousel through
+    // editor → automation → fleet → launcher (a horizontal slide at a *fixed*
+    // zoom — "flipping through the platform"); no pan/drag (it read as aimless).
     screenshots: [
       { src: "/work/stayyoung-platform/ai-funnel-editor.png", alt: "StayYoung platform — the AI funnel editor: describe a change in chat and see it applied live on the sales page", frame: "browser", ready: true },
       { src: "/work/stayyoung-platform/automation-builder.png", alt: "StayYoung platform — the automation builder: a visual trigger → webhook → exit workflow on a flow canvas", frame: "browser", ready: true },
@@ -191,10 +192,10 @@ export const projects: Project[] = [
       { src: "/work/stayyoung-platform/launcher.png", alt: "StayYoung platform — the app suite: funnels, AI, finance, and bookings in one place", frame: "browser", ready: true },
     ],
     preview: {
-      mp4: "/work/stayyoung-platform/platform-tour.mp4",
-      webm: "/work/stayyoung-platform/platform-tour.webm",
-      poster: "/work/stayyoung-platform/platform-tour-poster.png",
-      alt: "A tour of the StayYoung platform — the AI funnel editor, the live automation flow, the AI ops fleet, and the app suite",
+      mp4: "/work/stayyoung-platform/platform-tour-v2.mp4",
+      webm: "/work/stayyoung-platform/platform-tour-v2.webm",
+      poster: "/work/stayyoung-platform/platform-tour-v2-poster.png",
+      alt: "A tour of the StayYoung platform — the AI funnel editor, the automation builder, the AI ops fleet, and the app suite",
     },
   },
   {
