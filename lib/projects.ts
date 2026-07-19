@@ -176,21 +176,25 @@ export const projects: Project[] = [
       "Keeps the money-critical path running unattended — recurring billing, dunning, retries, and reconciliation.",
       "Funnels, ads, finance, and bookings live in one place, built around how the business actually operates.",
     ],
-    // Card + hero play a slide carousel through the real dashboards (AI agents →
-    // funnels → automations) — a horizontal slide at a *fixed* zoom, which reads
-    // as "flipping through the platform" (the earlier Ken-Burns *scaling* looked
-    // like odd breathing). automations appears only in the moving loop, not as a
-    // lingering still (its "0% success" columns read as broken). The stills below
-    // are the two healthy dashboards, kept as readable detail.
+    // Media re-captured 2026-07-19 from the live hub (hub.stayyoung.live) in
+    // MEMBER/operator view — dev "Report Bug / Suggest Feature" buttons hidden,
+    // no customer-PII screens (subscriptions/finance/billing/meet skipped). The
+    // card + hero play a slide carousel (AI fleet → app suite → funnel builder) —
+    // a horizontal slide at a *fixed* zoom, which reads as "flipping through the
+    // platform." New `platform-loop` filenames cache-bust the earlier app-loop.
+    // Screens lead with structure/breadth (the business runs on subscriptions, so
+    // the funnel/ad numbers are sparse) — the distinctive one is the AI ops fleet.
     screenshots: [
-      { src: "/work/stayyoung-platform/ai-agents.png", alt: "StayYoung platform — AI agents dashboard", frame: "browser", ready: true },
-      { src: "/work/stayyoung-platform/funnel-builder.png", alt: "StayYoung platform — funnel builder (sales → upsell → thank-you)", frame: "browser", ready: true },
+      { src: "/work/stayyoung-platform/fleet.png", alt: "StayYoung platform — the AI ops fleet: an org-chart of autonomous agents (COO, dev, success, service) running the business", frame: "browser", ready: true },
+      { src: "/work/stayyoung-platform/launcher.png", alt: "StayYoung platform — the app suite: funnels, AI, finance, and bookings in one place", frame: "browser", ready: true },
+      { src: "/work/stayyoung-platform/funnel-builder-v2.png", alt: "StayYoung platform — the funnel builder (sales page → order bumps → upsell → thank-you)", frame: "browser", ready: true },
+      { src: "/work/stayyoung-platform/automations-v2.png", alt: "StayYoung platform — the automations engine (dunning, retries, cancellation flows)", frame: "browser", ready: true },
     ],
     preview: {
-      mp4: "/work/stayyoung-platform/app-loop.mp4",
-      webm: "/work/stayyoung-platform/app-loop.webm",
-      poster: "/work/stayyoung-platform/app-loop-poster.png",
-      alt: "The StayYoung platform — sliding through the AI agents, funnel builder, and automation dashboards",
+      mp4: "/work/stayyoung-platform/platform-loop.mp4",
+      webm: "/work/stayyoung-platform/platform-loop.webm",
+      poster: "/work/stayyoung-platform/platform-loop-poster.png",
+      alt: "The StayYoung platform — sliding through the AI ops fleet, the app suite, and the funnel builder",
     },
   },
   {
