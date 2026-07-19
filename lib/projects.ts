@@ -191,10 +191,10 @@ export const projects: Project[] = [
       { src: "/work/stayyoung-platform/launcher.png", alt: "StayYoung platform — the app suite: funnels, AI, finance, and bookings in one place", frame: "browser", ready: true },
     ],
     preview: {
-      mp4: "/work/stayyoung-platform/platform-loop.mp4",
-      webm: "/work/stayyoung-platform/platform-loop.webm",
-      poster: "/work/stayyoung-platform/platform-loop-poster.png",
-      alt: "The StayYoung platform — sliding through the AI funnel editor, the automation builder, and the AI ops fleet",
+      mp4: "/work/stayyoung-platform/platform-tour.mp4",
+      webm: "/work/stayyoung-platform/platform-tour.webm",
+      poster: "/work/stayyoung-platform/platform-tour-poster.png",
+      alt: "A tour of the StayYoung platform — the AI funnel editor, the live automation flow, the AI ops fleet, and the app suite",
     },
   },
   {
