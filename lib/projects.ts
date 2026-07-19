@@ -178,23 +178,23 @@ export const projects: Project[] = [
     ],
     // Media re-captured 2026-07-19 from the live hub (hub.stayyoung.live) in
     // MEMBER/operator view — dev "Report Bug / Suggest Feature" buttons hidden,
-    // no customer-PII screens (subscriptions/finance/billing/meet skipped). The
-    // card + hero play a slide carousel (AI fleet → app suite → funnel builder) —
-    // a horizontal slide at a *fixed* zoom, which reads as "flipping through the
-    // platform." New `platform-loop` filenames cache-bust the earlier app-loop.
-    // Screens lead with structure/breadth (the business runs on subscriptions, so
-    // the funnel/ad numbers are sparse) — the distinctive one is the AI ops fleet.
+    // no customer-PII screens (subscriptions/finance/billing/meet skipped). Leads
+    // with the two builders (they're the differentiators): the AI funnel editor
+    // (chat + live preview) and the visual automation canvas. The automation shot
+    // uses a production automation (POST → broadcast.stayyoung.live), NOT a
+    // localhost/test one. Card + hero slide through editor → automation → fleet —
+    // a horizontal slide at a *fixed* zoom ("flipping through the platform").
     screenshots: [
+      { src: "/work/stayyoung-platform/ai-funnel-editor.png", alt: "StayYoung platform — the AI funnel editor: describe a change in chat and see it applied live on the sales page", frame: "browser", ready: true },
+      { src: "/work/stayyoung-platform/automation-builder.png", alt: "StayYoung platform — the automation builder: a visual trigger → webhook → exit workflow on a flow canvas", frame: "browser", ready: true },
       { src: "/work/stayyoung-platform/fleet.png", alt: "StayYoung platform — the AI ops fleet: an org-chart of autonomous agents (COO, dev, success, service) running the business", frame: "browser", ready: true },
       { src: "/work/stayyoung-platform/launcher.png", alt: "StayYoung platform — the app suite: funnels, AI, finance, and bookings in one place", frame: "browser", ready: true },
-      { src: "/work/stayyoung-platform/funnel-builder-v2.png", alt: "StayYoung platform — the funnel builder (sales page → order bumps → upsell → thank-you)", frame: "browser", ready: true },
-      { src: "/work/stayyoung-platform/automations-v2.png", alt: "StayYoung platform — the automations engine (dunning, retries, cancellation flows)", frame: "browser", ready: true },
     ],
     preview: {
       mp4: "/work/stayyoung-platform/platform-loop.mp4",
       webm: "/work/stayyoung-platform/platform-loop.webm",
       poster: "/work/stayyoung-platform/platform-loop-poster.png",
-      alt: "The StayYoung platform — sliding through the AI ops fleet, the app suite, and the funnel builder",
+      alt: "The StayYoung platform — sliding through the AI funnel editor, the automation builder, and the AI ops fleet",
     },
   },
   {
